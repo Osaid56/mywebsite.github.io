@@ -30,7 +30,7 @@ const AI_PROVIDERS = [
     name: 'Cerebras',
     url: 'https://api.cerebras.ai/v1/chat/completions',
     apiKey: process.env.CEREBRAS_API_KEY,
-    model: 'llama-4-scout-17b-16e-instruct',
+    model: 'llama3.1-8b',
     headers: (key) => ({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${key}`,
