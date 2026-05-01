@@ -8,7 +8,7 @@ const { neon } = require('@neondatabase/serverless');
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: ['https://osaid56.github.io', 'http://localhost:8080', 'http://localhost:3000'],
+  origin: ['https://osaid56.github.io', 'https://aibyosaid.vercel.app', 'http://localhost:8080', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
