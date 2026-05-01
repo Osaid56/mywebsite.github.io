@@ -7,7 +7,14 @@ const { neon } = require('@neondatabase/serverless');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ['https://osaid56.github.io', 'http://localhost:8080', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
+// Handle preflight requests explicitly for Vercel
+app.options('*', cors());
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_dev_key_123';
 const PORT = process.env.PORT || 5001;
