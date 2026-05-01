@@ -23,9 +23,19 @@ const PORT = process.env.PORT || 5001;
 const sql = neon(process.env.DATABASE_URL);
 
 // --- AI Provider Fallback Chain ---
-// Each provider uses an OpenAI-compatible /chat/completions endpoint.
+// Priority: Cerebras (fastest) → xAI → Gemini → OpenRouter → HuggingFace
 // If one fails (rate limit, error), the next is tried automatically.
 const AI_PROVIDERS = [
+  {
+    name: 'Cerebras',
+    url: 'https://api.cerebras.ai/v1/chat/completions',
+    apiKey: process.env.CEREBRAS_API_KEY,
+    model: 'llama-4-scout-17b-16e-instruct',
+    headers: (key) => ({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${key}`,
+    }),
+  },
   {
     name: 'xAI (Grok)',
     url: 'https://api.x.ai/v1/chat/completions',
