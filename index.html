@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <title>OS AI</title>
+  <!-- Load Tailwind CSS -->
+ <script src="https://cdn.tailwindcss.com"></script>
+ <script>
+   tailwind.config = {
+     darkMode: 'class',
+     theme: {
+       extend: {
+         animation: {
+           'spin-slow': 'spin 3s linear infinite',
+         }
+       }
+     }
+   }
+ </script>
+  <!-- Load React -->
+ <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+ <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Load Babel to translate JSX in the browser -->
+ <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+ <style>
+   body { margin: 0; transition: background-color 0.5s ease; overflow: hidden; }
+   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+   @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+   @keyframes scaleUp { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  
+   /* Custom Scrollbar */
+   ::-webkit-scrollbar { width: 6px; }
+   ::-webkit-scrollbar-track { background: transparent; }
+   ::-webkit-scrollbar-thumb { background: rgba(150,150,150,0.2); border-radius: 10px; }
+   .dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+ </style>
+</head>
+<body class="bg-slate-100 text-slate-800 dark:bg-[#050505] dark:text-white transition-colors duration-500">
+ <div id="root"></div>
+
+
+ <script type="text/babel">
+   const { useState, useRef, useEffect } = React;
+
+   // --- Inline Icons ---
+   const Send = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>;
+   const Sparkles = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>;
+   const Zap = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
+   const TerminalSquare = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m7 11 2-2-2-2"/><path d="M11 13h4"/><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/></svg>;
+   const MenuIcon = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>;
+   const X = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
+   const Sun = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>;
+   const Moon = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>;
+   const Plus = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M5 12h14"/><path d="M12 5v14"/></svg>;
+   const User = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+   const LogOut = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>;
+   const MessageSquare = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>;
+
+
+   const BACKEND_URL = "http://localhost:5001/api";
+
+   function App() {
+     const [messages, setMessages] = useState([]);
+     const [input, setInput] = useState('');
+     const [isLoading, setIsLoading] = useState(false);
+     const messagesEndRef = useRef(null);
+
+     // --- New Features State ---
+     const [theme, setTheme] = useState('dark');
+     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+     const [authMode, setAuthMode] = useState('login'); // 'login' or 'signup'
+    
+     const [currentUser, setCurrentUser] = useState(localStorage.getItem('username') || null);
+     const [token, setToken] = useState(localStorage.getItem('token') || null);
+     const [history, setHistory] = useState([]); // Array of {id, date, title, messages}
+     const [currentChatId, setCurrentChatId] = useState(null);
+
+     // Auth Form State
+     const [username, setUsername] = useState('');
+     const [password, setPassword] = useState('');
+     const [confirmPassword, setConfirmPassword] = useState('');
+     const [authError, setAuthError] = useState('');
+
+     // --- Handle Theme ---
+     useEffect(() => {
+       if (theme === 'dark') document.documentElement.classList.add('dark');
+       else document.documentElement.classList.remove('dark');
+     }, [theme]);
+
+     // --- Fetch History when logged in ---
+     useEffect(() => {
+       if (token) fetchHistory();
+     }, [token]);
+
+     const fetchHistory = async () => {
+       try {
+         const res = await fetch(`${BACKEND_URL}/chats`, { headers: { 'Authorization': `Bearer ${token}` } });
+         if (res.ok) {
+           const data = await res.json();
+           const formattedHistory = data.map(chat => ({
+             id: chat._id,
+             date: new Date(chat.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }),
+             title: chat.title,
+             messages: chat.messages
+           }));
+           setHistory(formattedHistory);
+         }
+       } catch (err) { console.error("Failed to fetch history", err); }
+     };
+
+     // --- Handle Back Button & Routing ---
+     useEffect(() => {
+       const handleHashChange = () => {
+         if (window.location.hash !== '#chat') {
+           setMessages([]);
+           setCurrentChatId(null);
+           setIsSidebarOpen(false);
+         }
+       };
+       window.addEventListener('hashchange', handleHashChange);
+       return () => window.removeEventListener('hashchange', handleHashChange);
+     }, []);
+
+     const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+     useEffect(() => scrollToBottom(), [messages, isLoading]);
+
+     // --- Auth Logic ---
+     const handleAuth = async (e) => {
+       e.preventDefault();
+       setAuthError('');
+       if (authMode === 'signup' && password !== confirmPassword) return setAuthError('Passwords do not match.');
+
+       try {
+         const endpoint = authMode === 'signup' ? '/auth/signup' : '/auth/login';
+         const res = await fetch(`${BACKEND_URL}${endpoint}`, {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({ username, password })
+         });
+         const data = await res.json();
+         if (!res.ok) throw new Error(data.error);
+
+         localStorage.setItem('token', data.token);
+         localStorage.setItem('username', data.username);
+         setToken(data.token);
+         setCurrentUser(data.username);
+         setIsAuthModalOpen(false);
+         setUsername(''); setPassword(''); setConfirmPassword('');
+       } catch (err) {
+         setAuthError(err.message);
+       }
+     };
+
+     const handleLogout = () => {
+       localStorage.removeItem('token');
+       localStorage.removeItem('username');
+       setToken(null);
+       setCurrentUser(null);
+       setHistory([]);
+       startNewChat();
+     };
+
+     // --- History Logic ---
+     const startNewChat = () => {
+       window.location.hash = ''; 
+       setMessages([]);
+       setCurrentChatId(null);
+       setIsSidebarOpen(false);
+     };
+
+     const loadChat = (chatId) => {
+       const chat = history.find(h => h.id === chatId);
+       if (chat) {
+         window.location.hash = 'chat'; 
+         setMessages(chat.messages);
+         setCurrentChatId(chat.id);
+         setIsSidebarOpen(false);
+       }
+     };
+
+     const saveChatToBackend = async (newMsgs, chatIdToUpdate) => {
+       if (!token) return null;
+       try {
+         const title = newMsgs[0]?.content.substring(0, 30) + '...';
+         const method = chatIdToUpdate ? 'PUT' : 'POST';
+         const endpoint = chatIdToUpdate ? `/chats/${chatIdToUpdate}` : '/chats';
+         
+         const res = await fetch(`${BACKEND_URL}${endpoint}`, {
+           method,
+           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+           body: JSON.stringify({ title, messages: newMsgs })
+         });
+         
+         const data = await res.json();
+         return data._id;
+       } catch (err) {
+         console.error("Failed to save chat", err);
+         return null;
+       }
+     };
+
+     // --- Send Logic ---
+      const handleSend = async () => {
+        if (!input.trim()) return;
+
+        if (messages.length === 0) window.location.hash = 'chat';
+
+        const userMessage = { role: 'user', content: input };
+        const newMessages = [...messages, userMessage];
+        setMessages(newMessages);
+        setInput('');
+        setIsLoading(true);
+
+        // Optimistic UI update (only for logged-in users)
+        if (token) {
+          let tempChatId = currentChatId;
+          const tempDate = new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+          setHistory(prev => {
+            const exists = prev.find(h => h.id === tempChatId);
+            if (exists) return prev.map(h => h.id === tempChatId ? { ...h, messages: newMessages } : h);
+            return [{ id: tempChatId || 'temp', date: tempDate, title: newMessages[0].content, messages: newMessages }, ...prev];
+          });
+        }
+
+        try {
+          const systemPrompt = {
+            role: 'system',
+            content: `You are OS AI, a highly advanced and exclusive AI assistant created by Osaid. Keep responses helpful, professional, and concise. ${currentUser ? `You are currently talking to ${currentUser}.` : ''}`
+          };
+
+          const headers = { 'Content-Type': 'application/json' };
+          if (token) headers['Authorization'] = `Bearer ${token}`;
+
+          const response = await fetch(`${BACKEND_URL}/chat/completions`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              messages: [systemPrompt, ...newMessages.map(m => ({ role: m.role, content: m.content }))],
+              max_completion_tokens: 1024,
+              temperature: 0.2,
+              top_p: 1,
+              stream: false,
+            }),
+          });
+
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error?.message || `API Error: ${response.status}`);
+
+          const aiMessage = { role: 'assistant', content: data.choices[0].message.content };
+          const finalMessages = [...newMessages, aiMessage];
+          setMessages(finalMessages);
+
+          // Save history only for logged-in users
+          if (token) {
+            const actualChatId = await saveChatToBackend(finalMessages, currentChatId);
+            if (!currentChatId && actualChatId) {
+              setCurrentChatId(actualChatId);
+              fetchHistory(); 
+            } else {
+              fetchHistory();
+            }
+          }
+        } catch (error) {
+          console.error('Error calling API:', error);
+          setMessages([...newMessages, { role: 'system', content: `Error: ${error.message}`, isError: true }]);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+     const handleKeyDown = (e) => {
+       if (e.key === 'Enter' && !e.shiftKey) {
+         e.preventDefault();
+         handleSend();
+       }
+     };
+
+     // Group history by date
+     const groupedHistory = history.reduce((acc, chat) => {
+       if (!acc[chat.date]) acc[chat.date] = [];
+       acc[chat.date].push(chat);
+       return acc;
+     }, {});
+
+     return (
+       // KEY LAYOUT FIX: Used h-[100dvh] and strict flexbox layout to prevent mobile UI from hiding behind the browser search bar.
+       <div className="h-[100dvh] w-full overflow-hidden flex flex-col relative selection:bg-fuchsia-500/30 selection:text-fuchsia-900 dark:selection:text-fuchsia-200 font-sans">
+        
+         {/* Ambient Effects - Dark & Light adaptions */}
+         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-fuchsia-300/20 dark:bg-fuchsia-600/30 rounded-full blur-[120px] dark:blur-[150px] pointer-events-none mix-blend-multiply dark:mix-blend-screen transition-all duration-1000" />
+         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-cyan-300/20 dark:bg-cyan-600/20 rounded-full blur-[120px] dark:blur-[150px] pointer-events-none mix-blend-multiply dark:mix-blend-screen transition-all duration-1000" />
+         <div className="absolute top-[30%] left-[30%] w-[30%] h-[30%] bg-violet-300/10 dark:bg-violet-600/20 rounded-full blur-[100px] dark:blur-[120px] pointer-events-none mix-blend-multiply dark:mix-blend-screen transition-all duration-1000" />
+         <div className="absolute top-[60%] right-[20%] w-[25%] h-[25%] bg-rose-300/10 dark:bg-rose-600/10 rounded-full blur-[90px] dark:blur-[100px] pointer-events-none mix-blend-multiply dark:mix-blend-screen transition-all duration-1000" />
+
+
+         {/* Header - Added shrink-0 so it never gets crushed by the layout */}
+         <header className="shrink-0 relative z-20 border-b border-slate-200/50 dark:border-white/5 bg-slate-50/60 dark:bg-black/40 backdrop-blur-xl px-4 md:px-6 py-4 flex items-center justify-between transition-colors duration-500">
+           <div
+             className="flex items-center gap-4 cursor-pointer group p-1.5 -ml-1.5 rounded-2xl hover:bg-slate-200/50 dark:hover:bg-white/5 transition-all"
+             onClick={() => setIsSidebarOpen(true)}
+           >
+             <div className="w-11 h-11 shrink-0 rounded-xl bg-gradient-to-tr from-fuchsia-500 via-purple-500 to-cyan-500 p-[1px] shadow-[0_0_20px_rgba(192,38,211,0.2)] dark:shadow-[0_0_20px_rgba(192,38,211,0.3)] group-hover:scale-105 transition-transform duration-300">
+               <div className="w-full h-full bg-white dark:bg-[#0a0a0a] rounded-xl flex items-center justify-center transition-colors duration-500">
+                 <MenuIcon className="w-6 h-6 text-slate-800 dark:text-white" />
+               </div>
+             </div>
+             <div>
+               <h1 className="text-xl font-bold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-white/80 dark:to-white/50">
+                 OS AI
+               </h1>
+               <p className="text-[9px] md:text-[10px] text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-cyan-500 dark:from-fuchsia-400 dark:to-cyan-400 font-mono tracking-widest uppercase flex items-center gap-1 font-semibold whitespace-nowrap">
+                 <Sparkles className="w-3 h-3 text-fuchsia-500 dark:text-fuchsia-400 shrink-0" /> Exclusively made for you
+               </p>
+             </div>
+           </div>
+          
+           {/* Quick Theme Toggle */}
+           <button
+             onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+             className="shrink-0 p-2.5 rounded-full bg-white/50 hover:bg-white dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 dark:text-white/70 dark:hover:text-white shadow-sm transition-all duration-300"
+           >
+             {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+           </button>
+         </header>
+
+
+         {/* Sidebar Overlay & Drawer */}
+         <div className={`fixed inset-0 z-50 transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+           <div className="absolute inset-0 bg-slate-900/20 dark:bg-black/50 backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)} />
+          
+           <div className={`absolute top-0 left-0 h-[100dvh] w-80 max-w-[85vw] bg-slate-50/95 dark:bg-[#0a0a0c]/95 backdrop-blur-2xl border-r border-slate-200/50 dark:border-white/10 shadow-2xl transform transition-transform duration-300 ease-out flex flex-col ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            
+             {/* Sidebar Header / User Profile */}
+             <div className="p-6 border-b border-slate-200/50 dark:border-white/5 shrink-0">
+               <div className="flex items-center justify-between mb-6">
+                 <h2 className="text-sm font-bold tracking-widest uppercase text-slate-800 dark:text-white flex items-center gap-2">
+                   <TerminalSquare className="w-5 h-5 text-fuchsia-500" /> OS AI Menu
+                 </h2>
+                 <button onClick={() => setIsSidebarOpen(false)} className="p-1 rounded-lg text-slate-400 hover:text-slate-800 dark:text-white/40 dark:hover:text-white transition-colors">
+                   <X className="w-5 h-5" />
+                 </button>
+               </div>
+
+
+               {currentUser ? (
+                 <div className="flex items-center justify-between p-3 rounded-xl bg-slate-100/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
+                   <div className="flex items-center gap-3">
+                     <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-fuchsia-500 to-cyan-500 flex items-center justify-center text-white font-bold shadow-md">
+                       {currentUser.charAt(0).toUpperCase()}
+                     </div>
+                     <span className="font-semibold text-slate-800 dark:text-white truncate max-w-[120px]">{currentUser}</span>
+                   </div>
+                   <button onClick={handleLogout} className="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Logout">
+                     <LogOut className="w-4 h-4" />
+                   </button>
+                 </div>
+               ) : (
+                 <button
+                   onClick={() => { setIsAuthModalOpen(true); setIsSidebarOpen(false); }}
+                   className="w-full py-3 rounded-xl bg-gradient-to-r from-fuchsia-600 to-cyan-600 text-white text-sm font-bold tracking-widest uppercase hover:shadow-[0_0_20px_rgba(192,38,211,0.3)] transition-all duration-300 flex items-center justify-center gap-2"
+                 >
+                   <User className="w-4 h-4" /> Login / Sign Up
+                 </button>
+               )}
+             </div>
+
+
+             {/* Sidebar Actions */}
+             <div className="p-4 flex gap-2 shrink-0">
+               <button
+                 onClick={startNewChat}
+                 className="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-white text-sm font-medium transition-all flex items-center justify-center gap-2 border border-slate-200 dark:border-white/5"
+               >
+                 <Plus className="w-4 h-4" /> New Chat
+               </button>
+             </div>
+
+
+             {/* Chat History */}
+             <div className="flex-1 min-h-0 overflow-y-auto p-4 scrollbar-thin">
+               <h3 className="text-[10px] font-bold tracking-widest uppercase text-slate-400 dark:text-white/40 mb-4 px-2">Conversation History</h3>
+              
+               {Object.keys(groupedHistory).length === 0 ? (
+                 <p className="text-xs text-slate-400 dark:text-white/30 px-2 italic">No previous chats.</p>
+               ) : (
+                 Object.keys(groupedHistory).map(date => (
+                   <div key={date} className="mb-6">
+                     <div className="text-xs font-semibold text-slate-500 dark:text-white/50 mb-2 px-2 sticky top-0 bg-slate-50/90 dark:bg-[#0a0a0c]/90 backdrop-blur-sm py-1 z-10">{date}</div>
+                     <div className="space-y-1">
+                       {groupedHistory[date].map(chat => (
+                         <button
+                           key={chat.id}
+                           onClick={() => loadChat(chat.id)}
+                           className={`w-full text-left p-3 rounded-xl text-sm transition-all flex items-center gap-3 ${
+                             currentChatId === chat.id
+                               ? 'bg-fuchsia-50 dark:bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-300 font-medium'
+                               : 'text-slate-600 dark:text-white/70 hover:bg-slate-100 dark:hover:bg-white/5'
+                           }`}
+                         >
+                           <MessageSquare className="w-4 h-4 shrink-0 opacity-70" />
+                           <span className="truncate">{chat.title}</span>
+                         </button>
+                       ))}
+                     </div>
+                   </div>
+                 ))
+               )}
+             </div>
+           </div>
+         </div>
+
+
+         {/* Auth Modal */}
+         {isAuthModalOpen && (
+           <div className="absolute inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md animate-[fadeIn_0.2s_ease-out]">
+             <div className="w-full max-w-md relative animate-[scaleUp_0.3s_ease-out]">
+               <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-600/20 to-cyan-600/20 blur-2xl rounded-[2rem]" />
+               <div className="relative bg-white dark:bg-[#0c0c0e] border border-slate-200 dark:border-white/10 rounded-[2rem] shadow-2xl overflow-hidden">
+                
+                 <div className="flex border-b border-slate-200 dark:border-white/10">
+                   <button
+                     className={`flex-1 py-4 text-sm font-bold tracking-widest uppercase transition-colors ${authMode === 'login' ? 'text-fuchsia-600 dark:text-fuchsia-400 border-b-2 border-fuchsia-500' : 'text-slate-400 dark:text-white/40 hover:text-slate-600 dark:hover:text-white/70'}`}
+                     onClick={() => { setAuthMode('login'); setAuthError(''); }}
+                   >
+                     Login
+                   </button>
+                   <button
+                     className={`flex-1 py-4 text-sm font-bold tracking-widest uppercase transition-colors ${authMode === 'signup' ? 'text-cyan-600 dark:text-cyan-400 border-b-2 border-cyan-500' : 'text-slate-400 dark:text-white/40 hover:text-slate-600 dark:hover:text-white/70'}`}
+                     onClick={() => { setAuthMode('signup'); setAuthError(''); }}
+                   >
+                     Sign Up
+                   </button>
+                 </div>
+
+
+                 <button onClick={() => setIsAuthModalOpen(false)} className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-800 dark:text-white/40 dark:hover:text-white">
+                   <X className="w-5 h-5" />
+                 </button>
+
+
+                 <form onSubmit={handleAuth} className="p-8 space-y-6">
+                   {authError && (
+                     <div className="p-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 text-xs font-medium text-center">
+                       {authError}
+                     </div>
+                   )}
+                  
+                   <div className="space-y-4">
+                     <div>
+                       <label className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-white/50 font-bold ml-1">Username</label>
+                       <input
+                         type="text"
+                         value={username}
+                         onChange={e => setUsername(e.target.value)}
+                         placeholder="Min 4 characters"
+                         className="w-full mt-1 bg-slate-50 dark:bg-[#050505] border border-slate-200 dark:border-white/10 focus:border-fuchsia-500 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white outline-none transition-all focus:ring-2 focus:ring-fuchsia-500/20"
+                       />
+                     </div>
+                     <div>
+                       <label className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-white/50 font-bold ml-1">Password</label>
+                       <input
+                         type="password"
+                         value={password}
+                         onChange={e => setPassword(e.target.value)}
+                         placeholder="Min 6 digits"
+                         className="w-full mt-1 bg-slate-50 dark:bg-[#050505] border border-slate-200 dark:border-white/10 focus:border-fuchsia-500 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white outline-none transition-all focus:ring-2 focus:ring-fuchsia-500/20"
+                       />
+                     </div>
+                     {authMode === 'signup' && (
+                       <div>
+                         <label className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-white/50 font-bold ml-1">Confirm Password</label>
+                         <input
+                           type="password"
+                           value={confirmPassword}
+                           onChange={e => setConfirmPassword(e.target.value)}
+                           placeholder="Re-enter password"
+                           className="w-full mt-1 bg-slate-50 dark:bg-[#050505] border border-slate-200 dark:border-white/10 focus:border-cyan-500 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white outline-none transition-all focus:ring-2 focus:ring-cyan-500/20"
+                         />
+                       </div>
+                     )}
+                   </div>
+
+
+                   <button type="submit" className="w-full py-4 rounded-xl bg-gradient-to-r from-fuchsia-600 to-cyan-600 text-white text-sm font-bold tracking-widest uppercase shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+                     {authMode === 'login' ? 'Enter OS AI' : 'Create Account'}
+                   </button>
+                 </form>
+               </div>
+             </div>
+           </div>
+         )}
+
+
+         {/* Main Chat Area - Added flex-1 min-h-0 to scroll perfectly inside the fixed viewport */}
+         <main className="flex-1 min-h-0 relative z-10 overflow-y-auto p-4 md:p-8 scroll-smooth">
+           <div className="max-w-4xl mx-auto space-y-6 pb-4">
+             {messages.length === 0 ? (
+               <div className="flex flex-col items-center justify-center h-[55vh] text-center space-y-6 opacity-0 animate-[fadeIn_1s_ease-out_forwards]">
+                 <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-fuchsia-400 via-purple-400 to-cyan-400 dark:from-fuchsia-500 dark:via-purple-500 dark:to-cyan-500 p-[1px] shadow-[0_10px_40px_rgba(192,38,211,0.1)] dark:shadow-[0_0_50px_rgba(192,38,211,0.25)] relative group">
+                   <div className="absolute inset-0 bg-gradient-to-tr from-fuchsia-400/50 via-purple-400/50 to-cyan-400/50 dark:from-fuchsia-500/50 dark:via-purple-500/50 dark:to-cyan-500/50 rounded-3xl blur-2xl transition-all duration-500" />
+                   <div className="w-full h-full bg-slate-50/90 dark:bg-[#0a0a0a] backdrop-blur-xl rounded-3xl flex items-center justify-center relative z-10 transition-colors duration-500">
+                     <Sparkles className="w-10 h-10 text-transparent fill-white stroke-fuchsia-400 dark:stroke-fuchsia-300 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
+                   </div>
+                 </div>
+                 <div className="space-y-2">
+                   <h2 className="text-3xl font-light tracking-wide text-slate-800 dark:text-white/90">
+                     Welcome to <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-500 dark:from-fuchsia-400 dark:via-purple-400 dark:to-cyan-400">OS AI</span>
+                   </h2>
+                    <p className="text-slate-500 dark:text-white/50 max-w-md mx-auto text-sm font-light leading-relaxed">
+                      {currentUser ? `Hello, ${currentUser}. ` : ''}The exclusive intelligence engine crafted by Osaid. How can I assist you today?
+                    </p>
+                    {!currentUser && (
+                      <p className="text-xs text-slate-400 dark:text-white/30 mt-2 flex items-center gap-1.5 justify-center">
+                        <Zap className="w-3 h-3" /> No login needed — sign in to save your chat history
+                      </p>
+                    )}
+                 </div>
+               </div>
+             ) : (
+               messages.map((msg, idx) => (
+                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-[slideUp_0.3s_ease-out_forwards]`}>
+                   <div className={`max-w-[85%] md:max-w-[75%] rounded-3xl p-[1px] ${
+                     msg.role === 'user'
+                       ? 'bg-gradient-to-br from-fuchsia-500 to-purple-500 dark:from-fuchsia-500/40 dark:to-purple-500/10 shadow-lg dark:shadow-[0_5px_20px_rgba(192,38,211,0.1)]'
+                       : msg.isError
+                       ? 'bg-gradient-to-b from-red-500/30 to-transparent'
+                       : 'bg-gradient-to-br from-slate-200/50 to-slate-100/50 dark:from-cyan-500/30 dark:to-blue-500/5 shadow-sm dark:shadow-[0_5px_20px_rgba(6,182,212,0.05)] border border-slate-200/50 dark:border-transparent'
+                   }`}>
+                     <div className={`rounded-3xl px-6 py-4 backdrop-blur-md text-sm leading-relaxed transition-colors duration-500 ${
+                       msg.role === 'user'
+                         ? 'bg-gradient-to-br from-fuchsia-500 to-purple-600 dark:from-[#1a0b1e] dark:to-[#110515] text-white'
+                         : msg.isError
+                         ? 'bg-red-50 dark:bg-[#1a0505] text-red-600 dark:text-red-200'
+                         : 'bg-white/60 dark:bg-gradient-to-br dark:from-[#0a0f16] dark:to-[#05080c] text-slate-700 dark:text-white/85'
+                     }`}>
+                       {msg.role === 'assistant' && (
+                         <div className="flex items-center gap-2 mb-3 border-b border-slate-200 dark:border-white/5 pb-2">
+                           <Sparkles className="w-4 h-4 text-cyan-500 dark:text-cyan-400" />
+                           <span className="text-[10px] font-bold tracking-widest text-cyan-600 dark:text-cyan-400/80 uppercase">OS AI Response</span>
+                         </div>
+                       )}
+                       <div className="whitespace-pre-wrap">{msg.content}</div>
+                     </div>
+                   </div>
+                 </div>
+               ))
+             )}
+            
+             {isLoading && (
+               <div className="flex justify-start animate-[fadeIn_0.3s_ease-out_forwards]">
+                 <div className="bg-gradient-to-br from-slate-200/50 to-slate-100/50 dark:from-cyan-500/30 dark:to-blue-500/10 p-[1px] rounded-3xl max-w-[75%] shadow-sm dark:shadow-[0_5px_20px_rgba(6,182,212,0.05)] border border-slate-200/50 dark:border-transparent">
+                   <div className="bg-white/60 dark:bg-gradient-to-br dark:from-[#0a0f16] dark:to-[#05080c] backdrop-blur-md rounded-3xl px-6 py-5 flex items-center gap-4 transition-colors duration-500">
+                     <div className="flex gap-1.5">
+                       <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400 animate-[bounce_1s_infinite_0ms]" />
+                       <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400 animate-[bounce_1s_infinite_200ms]" />
+                       <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400 animate-[bounce_1s_infinite_400ms]" />
+                     </div>
+                     <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400/60 uppercase tracking-widest">OS AI is thinking</span>
+                   </div>
+                 </div>
+               </div>
+             )}
+             <div ref={messagesEndRef} />
+           </div>
+         </main>
+
+
+         {/* Input Area - Added shrink-0 */}
+         <footer className="shrink-0 relative z-20 p-4 md:p-6 bg-gradient-to-t from-slate-100 via-slate-100 dark:from-[#050505] dark:via-[#050505] to-transparent transition-colors duration-500">
+           <div className="max-w-4xl mx-auto relative group">
+             <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400 dark:from-fuchsia-500 dark:via-purple-500 dark:to-cyan-500 rounded-3xl blur-lg opacity-20 dark:opacity-20 group-focus-within:opacity-40 dark:group-focus-within:opacity-50 transition-opacity duration-500" />
+             <div className="relative flex items-end gap-3 bg-slate-50/80 dark:bg-[#0a0a0c]/80 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-3xl p-2 shadow-xl dark:shadow-2xl transition-all duration-300 focus-within:border-fuchsia-400 dark:focus-within:border-fuchsia-500/50">
+               <textarea
+                 value={input}
+                 onChange={(e) => setInput(e.target.value)}
+                 onKeyDown={handleKeyDown}
+                 placeholder="Message OS AI..."
+                 className="flex-1 max-h-32 min-h-[52px] bg-transparent text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-white/30 resize-none outline-none py-3.5 px-5 text-sm"
+                 rows={1}
+               />
+               <button
+                 onClick={handleSend}
+                 disabled={!input.trim() || isLoading}
+                 className="mb-1 mr-1 p-3.5 rounded-2xl bg-gradient-to-tr from-fuchsia-500 to-cyan-500 text-white shadow-md hover:shadow-[0_0_20px_rgba(192,38,211,0.4)] disabled:opacity-30 disabled:hover:shadow-none transition-all duration-300 shrink-0"
+               >
+                 <Send className="w-4 h-4" />
+               </button>
+             </div>
+           </div>
+         </footer>
+       </div>
+     );
+   }
+
+   const root = ReactDOM.createRoot(document.getElementById('root'));
+   root.render(<App />);
+ </script>
+</body>
+</html>
