@@ -70,8 +70,10 @@ const AI_PROVIDERS = [
   },
 ];
 
-// --- Initialize Database Tables ---
+// --- Initialize Database Tables (lazy — runs once on first request) ---
+let dbInitialized = false;
 async function initDB() {
+  if (dbInitialized) return;
   try {
     await sql`
       CREATE TABLE IF NOT EXISTS osai_users (
@@ -99,14 +101,18 @@ async function initDB() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `;
+    dbInitialized = true;
     console.log('✅ Neon PostgreSQL connected & tables ready');
   } catch (err) {
     console.error('❌ Database init failed:', err.message);
-    process.exit(1);
   }
 }
 
-initDB();
+// Run DB init as middleware (lazy for Vercel, eager locally)
+app.use(async (req, res, next) => {
+  await initDB();
+  next();
+});
 
 // --- Auth Middleware (optional — returns userId or null) ---
 const optionalAuth = (req, res, next) => {
