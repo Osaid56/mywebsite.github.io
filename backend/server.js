@@ -323,7 +323,13 @@ app.post('/api/chat/completions', optionalAuth, async (req, res) => {
 });
 
 // =====================
-// START SERVER
+// EXPORT FOR VERCEL + LOCAL DEV
 // =====================
 
-app.listen(PORT, () => console.log(`🚀 OS AI Server running on port ${PORT}`));
+// Export for Vercel serverless
+module.exports = app;
+
+// Only listen locally (Vercel handles this in production)
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => console.log(`🚀 OS AI Server running on port ${PORT}`));
+}
